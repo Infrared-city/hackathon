@@ -127,8 +127,20 @@ pre {
 }
 .btn-outline:hover { border-color: var(--cyan); color: var(--cyan); opacity: 1; }
 
-/* Challenge track card — hover boosts saturation+brightness so the
-   warm yellow highlights in each illustration glow. */
+/* Challenge tracks grid — locked to 3 columns desktop, 2 tablet, 1 mobile */
+.tracks-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+@media (max-width: 900px) {
+  .tracks-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .tracks-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Card frame */
 .track-card {
   background: var(--bg-surface);
   border: 1px solid var(--border);
@@ -141,16 +153,40 @@ pre {
   transform: translateY(-3px);
   box-shadow: 0 14px 44px rgba(255, 190, 80, 0.18), 0 0 0 1px rgba(255, 200, 90, 0.25);
 }
+
+/* Image stack: base layer + bloom overlay (same src, blurred + saturated,
+   screen-blended). The brightest+warmest pixels — the yellow accents —
+   lift most, producing a real glow on hover. */
+.track-img-wrap {
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+}
 .track-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: filter 0.35s ease-out, transform 0.5s ease-out;
+  transition: transform 0.6s ease-out, filter 0.35s ease-out;
+}
+.track-glow {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  opacity: 0;
+  filter: blur(14px) saturate(4) brightness(1.35) contrast(1.1);
+  mix-blend-mode: screen;
+  transition: opacity 0.4s ease-out;
 }
 .track-card:hover .track-img {
-  filter: saturate(1.55) brightness(1.12) contrast(1.05);
-  transform: scale(1.03);
+  transform: scale(1.04);
+  filter: saturate(1.15) brightness(1.05);
+}
+.track-card:hover .track-glow {
+  opacity: 1;
 }
 
 /* Open-track pill — sits below the challenge grid */

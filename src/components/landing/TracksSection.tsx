@@ -53,65 +53,61 @@ export function TracksSection() {
         </p>
       </div>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-          gap: 20,
-        }}
-      >
-        {tracks.map((t) => (
-          <div key={t.title} className="track-card">
-            {/* Image thumbnail */}
-            <div style={{ position: 'relative', height: 180, overflow: 'hidden' }}>
-              <img
-                src={t.img}
-                alt={`${t.title} simulation example`}
-                loading="lazy"
-                className="track-img"
-                style={t.imgPosition ? { objectPosition: t.imgPosition } : undefined}
-              />
-              <div
-                aria-hidden
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'linear-gradient(to bottom, rgba(9,28,31,0) 55%, rgba(9,28,31,0.82) 100%)',
-                  pointerEvents: 'none',
-                }}
-              />
-            </div>
-
-            {/* Card body */}
-            <div style={{ padding: '20px 22px 22px' }}>
-              <h3
-                style={{
-                  fontFamily: fonts.display,
-                  fontSize: '1.05rem',
-                  fontWeight: 400,
-                  color: colors.textH,
-                  marginBottom: 8,
-                  lineHeight: 1.3,
-                }}
-              >
-                {t.title}
-              </h3>
-              <div
-                style={{
-                  fontFamily: fonts.mono,
-                  fontSize: 10,
-                  letterSpacing: '0.06em',
-                  color: colors.cyan,
-                  marginBottom: 10,
-                  textTransform: 'uppercase',
-                }}
-              >
-                {t.apis}
+      <div className="tracks-grid">
+        {tracks.map((t) => {
+          const imgStyle = t.imgPosition ? { objectPosition: t.imgPosition } : undefined
+          return (
+            <div key={t.title} className="track-card">
+              {/* Image stack: base + blurred saturated bloom overlay */}
+              <div className="track-img-wrap">
+                <img
+                  src={t.img}
+                  alt={`${t.title} simulation example`}
+                  loading="lazy"
+                  className="track-img"
+                  style={imgStyle}
+                />
+                <img
+                  src={t.img}
+                  alt=""
+                  aria-hidden
+                  loading="lazy"
+                  className="track-glow"
+                  style={imgStyle}
+                />
               </div>
-              <p style={{ fontSize: 13, lineHeight: 1.6, color: colors.textBody, margin: 0 }}>{t.body}</p>
+
+              {/* Card body */}
+              <div style={{ padding: '20px 22px 22px' }}>
+                <h3
+                  style={{
+                    fontFamily: fonts.display,
+                    fontSize: '1.05rem',
+                    fontWeight: 400,
+                    color: colors.textH,
+                    marginBottom: 8,
+                    lineHeight: 1.3,
+                  }}
+                >
+                  {t.title}
+                </h3>
+                <div
+                  style={{
+                    fontFamily: fonts.mono,
+                    fontSize: 10,
+                    letterSpacing: '0.06em',
+                    color: colors.cyan,
+                    marginBottom: 10,
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {t.apis}
+                </div>
+                <p style={{ fontSize: 13, lineHeight: 1.6, color: colors.textBody, margin: 0 }}>{t.body}</p>
+              </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
 
       {/* Open track — highlighted pill below the grid */}
