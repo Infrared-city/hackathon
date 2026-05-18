@@ -22,12 +22,6 @@ const tracks = [
     img: `${CDN}/media/image/8qr9dn9drf8k/optimised.jpg`,
   },
   {
-    title: 'Climate Adaptation',
-    apis: 'All 8 analyses · seasonal',
-    body: 'Before/after scenario comparison, green infrastructure ROI.',
-    img: `${CDN}/media/image/c9glcf6lj0vm/optimised.jpg`,
-  },
-  {
     title: 'AI Agents & Urban Intelligence',
     apis: 'Natural language → simulation → report',
     body: 'Build an agent using the Infrared SKILL.md interface — works with Claude Code, Cursor, Copilot.',
@@ -51,7 +45,7 @@ export function TracksSection() {
   return (
     <section className="scroll-animate" style={sectionStyle}>
       <div style={{ textAlign: 'center', marginBottom: 56 }}>
-        <div style={eyebrowStyle}>7 tracks</div>
+        <div style={eyebrowStyle}>6 tracks</div>
         <h2 style={h2Style}>Challenge tracks</h2>
         <p style={{ color: colors.text, maxWidth: 640, margin: '12px auto 0', fontSize: 15, lineHeight: 1.6 }}>
           Pick one. Or ignore them all and ship in the Open track.

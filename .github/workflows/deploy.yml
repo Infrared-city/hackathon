@@ -20,6 +20,11 @@ jobs:
       - run: npm ci
 
       - name: Build
+        env:
+          VITE_WINDMILL_TRIGGER_TOKEN:  ${{ secrets.VITE_WINDMILL_TRIGGER_TOKEN }}
+          VITE_NOCODB_READ_TOKEN:       ${{ secrets.VITE_NOCODB_READ_TOKEN }}
+          VITE_NOCO_PARTICIPANTS_TABLE: ${{ vars.VITE_NOCO_PARTICIPANTS_TABLE }}
+          VITE_NOCO_SUBMISSIONS_TABLE:  ${{ vars.VITE_NOCO_SUBMISSIONS_TABLE }}
         run: npm run build
 
       - name: Deploy to Cloudflare Pages
