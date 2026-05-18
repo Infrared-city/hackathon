@@ -4,26 +4,26 @@ const CDN = 'https://pub-196eb52bea2944ac94bf7d6015f31748.r2.dev'
 
 const tracks = [
   {
-    title: 'UTCI — The Tree Budget',
+    title: 'The Tree Budget',
     apis: 'UTCI · Thermal Comfort Statistics',
     body: 'One million euros for canopy. Where does each tree buy back the most °C of street relief?',
     img: `${CDN}/media/image/o43dfya05wkx/optimised.jpg`,
   },
   {
-    title: 'Wind — The Downwash',
+    title: 'The Downwash',
     apis: 'Wind Speed · Pedestrian Wind Comfort',
     body: 'New tower, new weather. Map what happens at the curb before the building exists.',
     img: `${CDN}/media/image/hcam4d39t8zo/optimised.jpg`,
   },
   {
-    title: 'Solar — Daylight Banking',
+    title: 'Daylight Banking',
     apis: 'Direct Sun Hours · Daylight · Solar Radiation',
     body: "Which streets keep their winter sun? Which rooftops are worth harvesting?",
     img: `${CDN}/media/image/j0kq47vvwrzq/optimised.jpg`,
     imgPosition: 'center 35%',
   },
   {
-    title: 'AI Agent — Citizen Voice / Chat',
+    title: 'Climate, Conversational',
     apis: 'Voice · SDK · Open data',
     body: '"Hey, is my street getting hotter?" A phone-callable agent grounded in simulation + open data.',
     img: `${CDN}/media/image/6wy0nxn7938v/optimised.jpg`,
@@ -35,7 +35,7 @@ const tracks = [
     img: `${CDN}/media/image/g2ro30lpeoib/optimised.jpg`,
   },
   {
-    title: 'GIS — The Cool Route',
+    title: 'The Cool Route',
     apis: 'Satellite imagery · GIS · Routing',
     body: 'Pull trees and surfaces from satellite imagery, then plan the shadiest run home.',
     img: `${CDN}/media/image/f9w8515rk47d/optimised.jpg`,
