@@ -37,6 +37,24 @@ Manual rebuild: `gh workflow run deploy.yml -R Infrared-city/hackathon`
 
 Frontend reads from NocoDB directly (read-only token) for the participants + projects galleries. All writes go through Windmill scripts via a scoped trigger token.
 
+## 📅 Team ops reminders calendar
+
+**Subscribe once → phone reminders for every flag flip:**
+
+Download → https://hackathon.infrared.city/team-reminders.ics
+
+Import into Google Calendar / Apple Calendar / Outlook. Five timed reminders with 30-min pre-alerts:
+
+| When (CET)        | Action |
+|---|---|
+| **May 27 08:00**  | Flip `registration_status` → `open` |
+| **May 31 08:00**  | Flip `submission_status` → `open`   |
+| **May 31 24:00**  | Flip `submission_status` → `closed` |
+| **June 2 15:00**  | Announce winners + flip `registration_status` → `closed` |
+| **June 3 08:00**  | Verify deactivation cron ran + revoke keys in Infrared backend |
+
+Send the same link to Sezin & anyone else who might need to do these flips while you're traveling.
+
 ## Operational gates (the flags you flip on launch day)
 
 Two Windmill variables control everything:

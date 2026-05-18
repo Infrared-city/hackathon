@@ -1,0 +1,76 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Infrared//Hackathon 2026 — Team Ops Reminders//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:hk26-flip-registration-open@infrared.city
+DTSTAMP:20260518T000000Z
+DTSTART:20260527T060000Z
+DTEND:20260527T060500Z
+SUMMARY:🚨 Flip hackathon registration_status → OPEN
+DESCRIPTION:Open https://windmill.team.infrared.city → Variables → f/hackathon/registration_status → set value to 'open' → Save.\n\nLanding page swaps countdown for the real registration form within 60s.
+URL:https://windmill.team.infrared.city
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT30M
+DESCRIPTION:Flip the hackathon registration flag in 30 min
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:hk26-flip-submission-open@infrared.city
+DTSTAMP:20260518T000000Z
+DTSTART:20260531T060000Z
+DTEND:20260531T060500Z
+SUMMARY:🚨 Flip hackathon submission_status → OPEN
+DESCRIPTION:Open https://windmill.team.infrared.city → Variables → f/hackathon/submission_status → set value to 'open' → Save.\n\nThis enables the /submit page for teams to upload their projects.
+URL:https://windmill.team.infrared.city
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT30M
+DESCRIPTION:Flip the hackathon submission flag in 30 min
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:hk26-flip-submission-closed@infrared.city
+DTSTAMP:20260518T000000Z
+DTSTART:20260531T220000Z
+DTEND:20260531T220500Z
+SUMMARY:🚨 Flip hackathon submission_status → CLOSED
+DESCRIPTION:Submission deadline reached (24:00 CET). Flip f/hackathon/submission_status → 'closed' in Windmill. Late submissions will be refused server-side after this.
+URL:https://windmill.team.infrared.city
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT30M
+DESCRIPTION:Submission window closes in 30 min — prepare to flip flag
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:hk26-announce-winners-close-reg@infrared.city
+DTSTAMP:20260518T000000Z
+DTSTART:20260602T130000Z
+DTEND:20260602T133000Z
+SUMMARY:🏆 Announce winners + flip registration_status → CLOSED
+DESCRIPTION:Winners announced 15:00 CET. After ceremony\, flip f/hackathon/registration_status → 'closed' in Windmill so the /get-key page shows the "Registration closed" view.
+URL:https://windmill.team.infrared.city
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT60M
+DESCRIPTION:Winners announcement + flag flip in 60 min
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:hk26-deactivate-keys-verify@infrared.city
+DTSTAMP:20260518T000000Z
+DTSTART:20260603T060000Z
+DTEND:20260603T063000Z
+SUMMARY:✅ Verify hackathon_keys deactivation cron ran
+DESCRIPTION:The Windmill schedule f/hackathon/deactivate_keys_schedule should have fired at 00:00 UTC. Check https://windmill.team.infrared.city → Runs and confirm all 50 keys are marked status=deactivated in NocoDB.\n\nAlso disable them in the Infrared backend (separate manual step — runbook in memory key hackathon26-key-deactivation.md).
+URL:https://nocodb.team.infrared.city
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT0M
+DESCRIPTION:Verify hackathon key deactivation now
+END:VALARM
+END:VEVENT
+END:VCALENDAR
