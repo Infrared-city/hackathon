@@ -126,3 +126,60 @@ pre {
   text-decoration: none;
 }
 .btn-outline:hover { border-color: var(--cyan); color: var(--cyan); opacity: 1; }
+
+/* Challenge track card — hover boosts saturation+brightness so the
+   warm yellow highlights in each illustration glow. */
+.track-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+.track-card:hover {
+  border-color: rgba(255, 200, 90, 0.55);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 44px rgba(255, 190, 80, 0.18), 0 0 0 1px rgba(255, 200, 90, 0.25);
+}
+.track-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: filter 0.35s ease-out, transform 0.5s ease-out;
+}
+.track-card:hover .track-img {
+  filter: saturate(1.55) brightness(1.12) contrast(1.05);
+  transform: scale(1.03);
+}
+
+/* Open-track pill — sits below the challenge grid */
+.open-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 26px;
+  border-radius: 999px;
+  border: 1px solid var(--cyan-border);
+  background: linear-gradient(90deg, rgba(35,229,229,0.06), rgba(100,217,166,0.06));
+  color: var(--text-h);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  cursor: default;
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+}
+.open-pill:hover {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 4px rgba(35,229,229,0.08), 0 8px 28px rgba(35,229,229,0.18);
+  transform: translateY(-2px);
+}
+.open-pill-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  padding: 4px 10px;
+  border: 1px solid var(--cyan-border);
+  border-radius: 999px;
+}

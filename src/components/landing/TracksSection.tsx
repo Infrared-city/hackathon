@@ -6,44 +6,39 @@ const tracks = [
   {
     title: 'UTCI — The Tree Budget',
     apis: 'UTCI · Thermal Comfort Statistics',
-    body: 'One million euros for canopy. Where does each tree buy back the most °C of street relief — sidewalks, sewers, and sightlines accounted for?',
+    body: 'One million euros for canopy. Where does each tree buy back the most °C of street relief?',
     img: `${CDN}/media/image/o43dfya05wkx/optimised.jpg`,
   },
   {
     title: 'Wind — The Downwash',
     apis: 'Wind Speed · Pedestrian Wind Comfort',
-    body: 'New tower, new weather. Map what happens at the curb under the building before the building exists.',
+    body: 'New tower, new weather. Map what happens at the curb before the building exists.',
     img: `${CDN}/media/image/hcam4d39t8zo/optimised.jpg`,
   },
   {
     title: 'Solar — Daylight Banking',
     apis: 'Direct Sun Hours · Daylight · Solar Radiation',
-    body: "Which streets keep their winter sun, and which rooftops are worth harvesting? Find the city's daylight savings account.",
+    body: "Which streets keep their winter sun? Which rooftops are worth harvesting?",
     img: `${CDN}/media/image/j0kq47vvwrzq/optimised.jpg`,
+    imgPosition: 'center 35%',
   },
   {
     title: 'AI Agent — Citizen Voice / Chat',
     apis: 'Voice · SDK · Open data',
-    body: '"Hey, is my street getting hotter?" Build the phone-callable agent that answers neighborhood questions in plain language — grounded in simulation + open data.',
+    body: '"Hey, is my street getting hotter?" A phone-callable agent grounded in simulation + open data.',
     img: `${CDN}/media/image/6wy0nxn7938v/optimised.jpg`,
   },
   {
     title: 'Live Weather — Event Operator',
     apis: 'Live weather · SDK · Agent',
-    body: 'The Donauinselfest watcher. An agent that scans the 72h forecast for an outdoor event and flags the hot, windy, UV-risky hours — with maps showing exactly where the trouble lands.',
+    body: 'The Donauinselfest watcher. Flag the hot, windy, UV-risky hours — with maps showing where trouble lands.',
     img: `${CDN}/media/image/g2ro30lpeoib/optimised.jpg`,
   },
   {
     title: 'GIS — The Cool Route',
     apis: 'Satellite imagery · GIS · Routing',
-    body: "Pull trees and surfaces from satellite imagery, then plan the shadiest run home. Plug into Strava, health apps, and the city's own GIS — self-optimization meets urban planning.",
+    body: 'Pull trees and surfaces from satellite imagery, then plan the shadiest run home.',
     img: `${CDN}/media/image/f9w8515rk47d/optimised.jpg`,
-  },
-  {
-    title: 'Open',
-    apis: 'Any use of the Infrared SDK',
-    body: 'Surprise us.',
-    img: `${CDN}/media/image/7opse7szf1w2/optimised.jpg`,
   },
 ]
 
@@ -61,55 +56,38 @@ export function TracksSection() {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
           gap: 20,
         }}
       >
         {tracks.map((t) => (
-          <div
-            key={t.title}
-            style={{
-              background: colors.bgSurface,
-              border: `1px solid ${colors.border}`,
-              borderRadius: 12,
-              overflow: 'hidden',
-              transition: 'border-color 0.2s, transform 0.2s, box-shadow 0.2s',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = colors.cyanBorder
-              e.currentTarget.style.transform = 'translateY(-3px)'
-              e.currentTarget.style.boxShadow = `0 12px 40px rgba(35,229,229,0.08)`
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = colors.border
-              e.currentTarget.style.transform = 'translateY(0)'
-              e.currentTarget.style.boxShadow = 'none'
-            }}
-          >
+          <div key={t.title} className="track-card">
             {/* Image thumbnail */}
-            <div style={{ position: 'relative', height: 140, overflow: 'hidden' }}>
+            <div style={{ position: 'relative', height: 180, overflow: 'hidden' }}>
               <img
                 src={t.img}
                 alt={`${t.title} simulation example`}
                 loading="lazy"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                className="track-img"
+                style={t.imgPosition ? { objectPosition: t.imgPosition } : undefined}
               />
               <div
                 aria-hidden
                 style={{
                   position: 'absolute',
                   inset: 0,
-                  background: 'linear-gradient(to bottom, rgba(9,28,31,0.1) 40%, rgba(9,28,31,0.85) 100%)',
+                  background: 'linear-gradient(to bottom, rgba(9,28,31,0) 55%, rgba(9,28,31,0.82) 100%)',
+                  pointerEvents: 'none',
                 }}
               />
             </div>
 
             {/* Card body */}
-            <div style={{ padding: 24 }}>
+            <div style={{ padding: '20px 22px 22px' }}>
               <h3
                 style={{
                   fontFamily: fonts.display,
-                  fontSize: '1.1rem',
+                  fontSize: '1.05rem',
                   fontWeight: 400,
                   color: colors.textH,
                   marginBottom: 8,
@@ -130,10 +108,20 @@ export function TracksSection() {
               >
                 {t.apis}
               </div>
-              <p style={{ fontSize: 13, lineHeight: 1.65, color: colors.textBody, margin: 0 }}>{t.body}</p>
+              <p style={{ fontSize: 13, lineHeight: 1.6, color: colors.textBody, margin: 0 }}>{t.body}</p>
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Open track — highlighted pill below the grid */}
+      <div style={{ textAlign: 'center', marginTop: 40 }}>
+        <div className="open-pill">
+          <span className="open-pill-tag">Open track</span>
+          <span style={{ color: colors.textBody, fontSize: 14 }}>
+            Any use of the Infrared SDK. <span style={{ color: colors.textH }}>Surprise us.</span>
+          </span>
+        </div>
       </div>
     </section>
   )
