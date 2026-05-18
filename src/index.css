@@ -170,6 +170,23 @@ pre {
   filter: brightness(1.06);
 }
 
+/* Hover-to-play animation overlay. Same frame as .track-img;
+   default opacity 0, fades in when card is hovered, JS plays/pauses. */
+.track-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.28s ease-out;
+}
+.track-card:hover .track-video {
+  opacity: 1;
+}
+
 /* Open-track pill — sits below the challenge grid */
 .open-pill {
   display: inline-flex;
