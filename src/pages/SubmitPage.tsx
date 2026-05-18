@@ -8,6 +8,7 @@ import {
   pageStyle,
   containerStyle,
 } from '../components/ui/FormPrimitives'
+import { useStatus } from '../lib/useStatus'
 
 type Status = 'idle' | 'submitting' | 'success' | 'error'
 
@@ -31,9 +32,40 @@ const emptyForm = {
 type FormState = typeof emptyForm
 
 export function SubmitPage() {
+  const { status: gates, loading: gatesLoading } = useStatus()
   const [form, setForm] = useState<FormState>(emptyForm)
   const [status, setStatus] = useState<Status>('idle')
   const [errorMsg, setErrorMsg] = useState<string>('')
+
+  if (gatesLoading) {
+    return <div style={pageStyle}><div style={{ ...containerStyle, color: 'var(--text)' }}>Loading…</div></div>
+  }
+  if (gates.submission === 'locked') {
+    return (
+      <div style={pageStyle}>
+        <div style={{ ...containerStyle, textAlign: 'center', paddingTop: 64 }}>
+          <h1 style={{ fontSize: 36, marginBottom: 12 }}>Submissions not yet open</h1>
+          <p style={{ color: 'var(--text)', fontSize: 16, lineHeight: 1.7, marginBottom: 28 }}>
+            The submission window opens at the hackathon kickoff (May 27) and closes Sunday May 31, 24:00 CET.
+          </p>
+          <a href="/get-key" className="btn-primary">Register your team</a>
+        </div>
+      </div>
+    )
+  }
+  if (gates.submission === 'closed') {
+    return (
+      <div style={pageStyle}>
+        <div style={{ ...containerStyle, textAlign: 'center', paddingTop: 64 }}>
+          <h1 style={{ fontSize: 36, marginBottom: 12 }}>Submissions closed</h1>
+          <p style={{ color: 'var(--text)', fontSize: 16, lineHeight: 1.7, marginBottom: 28 }}>
+            The submission window has ended. Browse all submitted projects → demos · winners announced Tue Jun 2.
+          </p>
+          <a href="/projects" className="btn-primary">View projects</a>
+        </div>
+      </div>
+    )
+  }
 
   const update = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }))

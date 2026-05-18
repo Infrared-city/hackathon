@@ -1,5 +1,7 @@
 const WINDMILL_BASE = 'https://windmill.team.infrared.city/api/w/ir-main'
 
+export type GateStatus = 'locked' | 'open' | 'closed'
+
 // Windmill webhook endpoints (scoped tokens set as env vars).
 // `run_wait_result` is synchronous — body contains the script return value directly.
 const ENDPOINTS = {
@@ -7,6 +9,7 @@ const ENDPOINTS = {
   submitProject:       `${WINDMILL_BASE}/jobs/run_wait_result/p/f/hackathon/submit_project`,
   registerParticipant: `${WINDMILL_BASE}/jobs/run_wait_result/p/f/hackathon/register_participant`,
   notifyMe:            `${WINDMILL_BASE}/jobs/run_wait_result/p/f/hackathon/notify_me`,
+  status:              `${WINDMILL_BASE}/jobs/run_wait_result/p/f/hackathon/status`,
 }
 
 // NocoDB public read (read-only token, safe to expose)
@@ -53,6 +56,8 @@ export const api = {
 
   notifyMe: (body: { email: string; name?: string; source: 'landing' | 'getkey' | 'footer' }) =>
     windmill(ENDPOINTS.notifyMe, body),
+
+  status: () => windmill(ENDPOINTS.status, {}) as Promise<{ registration: GateStatus; submission: GateStatus }>,
 
   getParticipants: () =>
     nocoGet(import.meta.env.VITE_NOCO_PARTICIPANTS_TABLE ?? '', 'limit=200&sort=-registered_at'),

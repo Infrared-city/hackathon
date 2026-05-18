@@ -48,7 +48,6 @@ export const TRACKS = [
   'Urban Heat',
   'Wind & Pedestrian Safety',
   'Solar Access & Energy',
-  'Climate Adaptation',
   'AI Agents & Urban Intelligence',
   'Digital Climate Twin',
   'Open',
