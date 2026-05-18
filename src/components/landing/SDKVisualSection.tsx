@@ -34,11 +34,13 @@ export function SDKVisualSection() {
             title="Infrared SDK Playground — try all 8 analyses live"
             loading="lazy"
             allow="clipboard-write"
+            scrolling="no"
             style={{
               width: '100%',
               height: '100%',
               border: 'none',
               display: 'block',
+              overflow: 'hidden',
             }}
           />
         </div>
