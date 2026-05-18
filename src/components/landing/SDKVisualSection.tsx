@@ -1,93 +1,67 @@
-import { colors, fonts, sectionStyle, h2Style, eyebrowStyle } from './tokens'
+import { colors, sectionStyle, h2Style, eyebrowStyle } from './tokens'
 
-const CDN = 'https://pub-196eb52bea2944ac94bf7d6015f31748.r2.dev'
-
-const ANALYSES_COLLAGE = `${CDN}/media/image/c9glcf6lj0vm/optimised.jpg`
-const AGENT_ORBIT     = `${CDN}/media/image/er7xea79kb98/optimised.jpg`
-
-const analyses = [
-  { label: 'Wind Speed', img: `${CDN}/media/image/j2cjjpkvv1j6/optimised.jpg` },
-  { label: 'Pedestrian Wind Comfort', img: `${CDN}/media/image/pne2rkdkrv3c/optimised.jpg` },
-  { label: 'Daylight Availability', img: `${CDN}/media/image/cgmaum9s9aja/optimised.jpg` },
-  { label: 'Direct Sun Hours', img: `${CDN}/media/image/6q6ilj1cr4cb/optimised.jpg` },
-  { label: 'Sky View Factor', img: `${CDN}/media/image/w9tc6rmfld8e/optimised.jpg` },
-  { label: 'Solar Radiation', img: `${CDN}/media/image/8qr9dn9drf8k/optimised.jpg` },
-  { label: 'UTCI Thermal Comfort', img: `${CDN}/media/image/wg5dimserojh/optimised.jpg` },
-  { label: 'Thermal Comfort Stats', img: `${CDN}/media/image/k4len4f6br7a/optimised.jpg` },
-]
+const CDN         = 'https://pub-196eb52bea2944ac94bf7d6015f31748.r2.dev'
+const AGENT_ORBIT = `${CDN}/media/image/er7xea79kb98/optimised.jpg`
+const SDK_PLAYGROUND = 'https://sdk-playground-14t.pages.dev/?embed=1'
 
 export function SDKVisualSection() {
   return (
     <>
-      {/* ── 8 analyses showcase ── */}
+      {/* ── Interactive SDK playground ── */}
       <section className="scroll-animate" style={sectionStyle}>
-        <div style={{ textAlign: 'center', marginBottom: 48 }}>
+        <div style={{ textAlign: 'center', marginBottom: 40 }}>
           <div style={eyebrowStyle}>Infrared SDK</div>
           <h2 style={h2Style}>8 analyses, one SDK</h2>
           <p style={{ color: colors.text, maxWidth: 640, margin: '12px auto 0', fontSize: 15, lineHeight: 1.6 }}>
-            Wind, sun, daylight, sky view, thermal comfort — all available from a single Python client.
-            Each analysis returns a georeferenced heatmap ready to render, export, or feed into your pipeline.
+            Wind, sun, daylight, sky view, thermal comfort — all from a single Python client.
+            Try it live below — real simulation endpoints, all eight engines.
           </p>
         </div>
 
-        {/* Wide collage */}
+        {/* Playground iframe */}
         <div
           style={{
             borderRadius: 16,
             overflow: 'hidden',
             border: `1px solid ${colors.border}`,
-            marginBottom: 32,
-            boxShadow: '0 24px 64px rgba(0,0,0,0.5)',
+            boxShadow: '0 0 80px rgba(35,229,229,0.08), 0 24px 64px rgba(0,0,0,0.5)',
+            position: 'relative',
+            aspectRatio: '16 / 10',
           }}
         >
-          <img
-            src={ANALYSES_COLLAGE}
-            alt="All 8 SDK analyses rendered side-by-side"
+          <iframe
+            src={SDK_PLAYGROUND}
+            title="Infrared SDK Playground — try all 8 analyses live"
             loading="lazy"
-            style={{ width: '100%', height: 'auto', display: 'block' }}
+            allow="clipboard-write"
+            style={{
+              width: '100%',
+              height: '100%',
+              border: 'none',
+              display: 'block',
+            }}
           />
         </div>
 
-        {/* Individual chips */}
-        <div
+        <p
           style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
-            gap: 12,
+            textAlign: 'center',
+            color: colors.text,
+            fontSize: 13,
+            marginTop: 16,
+            lineHeight: 1.5,
           }}
         >
-          {analyses.map((a) => (
-            <div
-              key={a.label}
-              style={{
-                background: colors.bgSurface,
-                border: `1px solid ${colors.border}`,
-                borderRadius: 10,
-                overflow: 'hidden',
-              }}
-            >
-              <div style={{ height: 90, overflow: 'hidden' }}>
-                <img
-                  src={a.img}
-                  alt={a.label}
-                  loading="lazy"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                />
-              </div>
-              <div
-                style={{
-                  padding: '8px 10px',
-                  fontSize: 11,
-                  fontFamily: fonts.mono,
-                  color: colors.textBody,
-                  letterSpacing: '0.03em',
-                }}
-              >
-                {a.label}
-              </div>
-            </div>
-          ))}
-        </div>
+          Live simulation endpoints, automatic tiling for large areas, all eight engines.{' '}
+          <a
+            href="https://infrared.city/docs/sdk/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: colors.cyan, textDecoration: 'none' }}
+          >
+            Read the docs →
+          </a>
+        </p>
       </section>
 
       {/* ── AI agents row ── */}
@@ -109,14 +83,7 @@ export function SDKVisualSection() {
             Your agents and your engineers share the same recipes — integrations that used to take a sprint
             now ship in an afternoon.
           </p>
-          <ul
-            style={{
-              listStyle: 'none',
-              display: 'grid',
-              gap: 10,
-              marginBottom: 32,
-            }}
-          >
+          <ul style={{ listStyle: 'none', display: 'grid', gap: 10, marginBottom: 32 }}>
             {[
               'Natural language → simulation → georeferenced result',
               'Works with Claude Code, Cursor, and Copilot',

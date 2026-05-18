@@ -74,8 +74,8 @@ export function HeroSection() {
               maxWidth: 480,
             }}
           >
-            Run wind, solar, and thermal comfort simulations on any city polygon.
-            Build something real. Win €5,000 of infrared.city API credits.
+            Three days to explore what's possible when urban climate data becomes an API call.
+            Build an app, a workflow, a reporting tool, a plugin — and win up to €5,000 in infrared.city credits.
           </p>
 
           <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', marginBottom: 48 }}>
