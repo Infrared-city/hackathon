@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+:root {
+  /* Infrared product-page dark theme (exact values from product-theme.css) */
+  --bg:           #091C1F;
+  --bg-alt:       #0D2A2E;
+  --bg-surface:   #122E33;
+  --border:       #1E4A50;
+  --text:         #8FB0B0;
+  --text-h:       #F0FAFA;
+  --text-body:    #DFF0F0;
+
+  /* Brand accent */
+  --cyan:         #23E5E5;
+  --cyan-dim:     rgba(35, 229, 229, 0.12);
+  --cyan-border:  rgba(35, 229, 229, 0.3);
+  --green:        #64D9A6;
+  --primary:      #2B7C85;
+  --primary-dark: #093939;
+
+  /* Button gradient */
+  --btn-gradient: linear-gradient(to right, #64D9A6, #23E5E5);
+
+  /* Typography */
+  --font-display: 'Encode Sans Semi Expanded', system-ui, sans-serif;
+  --font-sans:    'Work Sans', system-ui, sans-serif;
+  --font-mono:    ui-monospace, 'SFMono-Regular', Menlo, Monaco, Consolas, monospace;
+
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { min-height: 100svh; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--text-h);
+  font-weight: 300;
+  line-height: 1.27;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { opacity: 0.8; }
+
+code {
+  font-family: var(--font-mono);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 13px;
+  color: var(--cyan);
+}
+
+pre {
+  font-family: var(--font-mono);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-x: auto;
+  color: var(--text-body);
+}
+
+/* Scroll-triggered fade-in (matches Infrared website pattern) */
+.scroll-animate {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+.scroll-animate.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Text gradient (cyan) */
+.text-gradient {
+  background: linear-gradient(90deg, #23E5E5, #64D9A6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Primary button */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: var(--btn-gradient);
+  color: var(--primary-dark);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  box-shadow: 0 4px 4px rgba(9,57,57,0.25);
+}
+.btn-primary:hover { opacity: 0.9; box-shadow: 0 6px 6px rgba(9,57,57,0.3); }
+
+/* Outline button */
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: transparent;
+  color: var(--text-h);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+.btn-outline:hover { border-color: var(--cyan); color: var(--cyan); opacity: 1; }
