@@ -56,7 +56,7 @@ def main():
         for row in rows
     ]
 
-    payload = json.dumps({'list': records}).encode()
+    payload = json.dumps(records).encode()
     url     = f'{NOCODB_BASE}/tables/{table_id}/records'
     req     = urllib.request.Request(
         url,

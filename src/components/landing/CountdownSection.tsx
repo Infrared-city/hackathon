@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { HACKATHON_START, HACKATHON_END } from '../../lib/config'
 import { colors, fonts, sectionStyle } from './tokens'
+import { WaitlistForm } from './WaitlistForm'
+import { AddToCalendar } from './AddToCalendar'
 
 interface TimeLeft {
   days: number
@@ -103,13 +105,20 @@ export function CountdownSection({ inline }: CountdownSectionProps) {
           Registration opens {launchStr}
         </div>
         {timeLeft && (
-          <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 24 }}>
             <Digit value={timeLeft.days}    label="days"    />
             <Digit value={timeLeft.hours}   label="hours"   />
             <Digit value={timeLeft.minutes} label="minutes" />
             <Digit value={timeLeft.seconds} label="seconds" />
           </div>
         )}
+        <div style={{ marginTop: 20, marginBottom: 16 }}>
+          <div style={{ fontSize: 13, color: colors.text, marginBottom: 10, fontFamily: fonts.sans }}>
+            Get reminded when registration opens
+          </div>
+          <WaitlistForm source="getkey" compact />
+        </div>
+        <AddToCalendar />
       </div>
     )
   }
@@ -149,13 +158,34 @@ export function CountdownSection({ inline }: CountdownSectionProps) {
         {launchStr}
       </h2>
       {timeLeft && (
-        <div style={{ display: 'flex', gap: 20, justifyContent: 'center', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: 20, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 36 }}>
           <Digit value={timeLeft.days}    label="days"    />
           <Digit value={timeLeft.hours}   label="hours"   />
           <Digit value={timeLeft.minutes} label="minutes" />
           <Digit value={timeLeft.seconds} label="seconds" />
         </div>
       )}
+      <div
+        style={{
+          maxWidth: 520,
+          margin: '0 auto',
+          padding: '24px 28px',
+          background: colors.bgSurface,
+          border: `1px solid ${colors.border}`,
+          borderRadius: 12,
+        }}
+      >
+        <div style={{ fontSize: 14, color: colors.textH, marginBottom: 6, fontFamily: fonts.display }}>
+          Get the launch email
+        </div>
+        <div style={{ fontSize: 13, color: colors.text, marginBottom: 16, lineHeight: 1.5 }}>
+          We'll send the API key form + Discord invite on May 27. No other emails.
+        </div>
+        <WaitlistForm source="landing" />
+      </div>
+      <div style={{ marginTop: 28 }}>
+        <AddToCalendar />
+      </div>
     </section>
   )
 }

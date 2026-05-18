@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Infrared//Hackathon 2026//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:infrared-sdk-buildathon-2026@infrared.city
+DTSTAMP:20260518T000000Z
+DTSTART:20260527T150000Z
+DTEND:20260531T220000Z
+SUMMARY:Infrared SDK Buildathon
+DESCRIPTION:5 lines of code. Any city. Any climate.\n\n3 days. Real data. Your ideas.\n\nKickoff: Wed May 27 17:00 CET\nSubmission deadline: Sun May 31 24:00 CET\nWinners: Tue Jun 2\n\nMore: https://hackathon.infrared.city
+LOCATION:Online
+URL:https://hackathon.infrared.city
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+END:VEVENT
+END:VCALENDAR

@@ -6,6 +6,7 @@ const ENDPOINTS = {
   requestKey:          `${WINDMILL_BASE}/jobs/run_wait_result/p/f/hackathon/request_key`,
   submitProject:       `${WINDMILL_BASE}/jobs/run_wait_result/p/f/hackathon/submit_project`,
   registerParticipant: `${WINDMILL_BASE}/jobs/run_wait_result/p/f/hackathon/register_participant`,
+  notifyMe:            `${WINDMILL_BASE}/jobs/run_wait_result/p/f/hackathon/notify_me`,
 }
 
 // NocoDB public read (read-only token, safe to expose)
@@ -49,6 +50,9 @@ export const api = {
 
   registerParticipant: (body: { nickname: string; skills: string[]; looking_for_team: boolean }) =>
     windmill(ENDPOINTS.registerParticipant, body),
+
+  notifyMe: (body: { email: string; name?: string; source: 'landing' | 'getkey' | 'footer' }) =>
+    windmill(ENDPOINTS.notifyMe, body),
 
   getParticipants: () =>
     nocoGet(import.meta.env.VITE_NOCO_PARTICIPANTS_TABLE ?? '', 'limit=200&sort=-registered_at'),
