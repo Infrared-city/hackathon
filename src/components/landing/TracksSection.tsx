@@ -58,21 +58,12 @@ export function TracksSection() {
           const imgStyle = t.imgPosition ? { objectPosition: t.imgPosition } : undefined
           return (
             <div key={t.title} className="track-card">
-              {/* Image stack: base + blurred saturated bloom overlay */}
               <div className="track-img-wrap">
                 <img
                   src={t.img}
                   alt={`${t.title} simulation example`}
                   loading="lazy"
                   className="track-img"
-                  style={imgStyle}
-                />
-                <img
-                  src={t.img}
-                  alt=""
-                  aria-hidden
-                  loading="lazy"
-                  className="track-glow"
                   style={imgStyle}
                 />
               </div>
