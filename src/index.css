@@ -200,3 +200,113 @@ pre {
   border: 1px solid var(--cyan-border);
   border-radius: 999px;
 }
+
+/* ─────────── Mobile helpers ─────────── */
+
+/* Prevent horizontal scroll caused by stray overflowing children */
+html, body { max-width: 100%; overflow-x: hidden; }
+
+/* Section padding — desktop default lives in tokens.ts (96px 24px).
+   Compress vertical padding on narrow viewports so the page doesn't feel empty. */
+@media (max-width: 700px) {
+  /* every landing section uses sectionStyle which sets padding:96px 24px;
+     we override via descendant selector on <section> tags inside <main>. */
+  main > section { padding-top: 56px !important; padding-bottom: 56px !important; }
+}
+
+/* Two-column layouts that need to stack on mobile.
+   Add this class alongside the inline grid styles in HeroSection / SDKVisualSection. */
+.two-col-stack {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 72px);
+  align-items: center;
+}
+@media (max-width: 860px) {
+  .two-col-stack { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+}
+
+/* Hero stats — 4 across desktop, 2x2 on mobile so values stay readable */
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+}
+@media (max-width: 560px) {
+  .hero-stats { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* SDK playground iframe — desktop keeps 16/10 aspect ratio.
+   On mobile that aspect ratio is too short to use, so swap to a fixed
+   tall minimum height. */
+.sdk-playground-frame {
+  aspect-ratio: 16 / 10;
+  position: relative;
+}
+@media (max-width: 760px) {
+  .sdk-playground-frame {
+    aspect-ratio: auto;
+    height: 78vh;
+    min-height: 520px;
+    max-height: 760px;
+  }
+}
+
+/* Countdown digits — shrink the per-digit min-width on phones so all
+   four fit on a single row at 360px. */
+@media (max-width: 480px) {
+  .countdown-digit { min-width: 60px !important; }
+  .countdown-digit > div:first-child { min-width: 60px !important; }
+}
+
+/* Timeline rows — desktop = date column + events column.
+   Stack on mobile so neither column gets crushed. */
+.timeline-row { display: grid; grid-template-columns: 180px 1fr; }
+@media (max-width: 640px) {
+  .timeline-row { grid-template-columns: minmax(0, 1fr); }
+  .timeline-row > div:first-child {
+    border-right: none !important;
+    border-bottom: 1px solid var(--border);
+    padding: 14px 18px !important;
+  }
+  .timeline-row > div:last-child { padding: 14px 18px !important; }
+  .timeline-event { flex-direction: column !important; gap: 2px !important; }
+  .timeline-event-time { min-width: 0 !important; }
+}
+
+/* Prize cards — tone down padding + amount font-size on small screens */
+@media (max-width: 560px) {
+  .prize-card { padding: 22px !important; }
+  .prize-amount { font-size: 2.25rem !important; }
+  .prize-amount-large { font-size: 2.5rem !important; }
+}
+
+/* Nav — fixed 32px side padding is too much on phones, and the
+   nav link cluster + Get-API-Key button needs to shrink. */
+@media (max-width: 600px) {
+  .site-nav { padding: 0 14px !important; }
+  .site-nav-links { gap: 2px !important; }
+  .site-nav-link { padding: 6px 10px !important; font-size: 13px !important; }
+  .site-nav-cta { padding: 8px 14px !important; font-size: 13px !important; }
+}
+@media (max-width: 420px) {
+  /* hide the secondary text links; logo + CTA always visible */
+  .site-nav-link { display: none !important; }
+}
+
+/* Waitlist form — let inputs go fully fluid on narrow screens */
+@media (max-width: 480px) {
+  .waitlist-form input { min-width: 0 !important; flex: 1 1 100% !important; }
+  .waitlist-form button { flex: 1 1 100% !important; }
+}
+
+/* Generic preformatted block: ensure long code lines wrap on phones
+   instead of forcing the entire page wider than the viewport. */
+@media (max-width: 560px) {
+  pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+    padding: 14px !important;
+    font-size: 12px !important;
+  }
+}
