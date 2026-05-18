@@ -1,10 +1,11 @@
 const WINDMILL_BASE = 'https://windmill.team.infrared.city/api/w/ir-main'
 
-// Windmill webhook endpoints (scoped tokens set as env vars)
+// Windmill webhook endpoints (scoped tokens set as env vars).
+// `run_wait_result` is synchronous — body contains the script return value directly.
 const ENDPOINTS = {
-  requestKey:          `${WINDMILL_BASE}/jobs/run/p/f/hackathon/request_key`,
-  submitProject:       `${WINDMILL_BASE}/jobs/run/p/f/hackathon/submit_project`,
-  registerParticipant: `${WINDMILL_BASE}/jobs/run/p/f/hackathon/register_participant`,
+  requestKey:          `${WINDMILL_BASE}/jobs/run_wait_result/p/f/hackathon/request_key`,
+  submitProject:       `${WINDMILL_BASE}/jobs/run_wait_result/p/f/hackathon/submit_project`,
+  registerParticipant: `${WINDMILL_BASE}/jobs/run_wait_result/p/f/hackathon/register_participant`,
 }
 
 // NocoDB public read (read-only token, safe to expose)

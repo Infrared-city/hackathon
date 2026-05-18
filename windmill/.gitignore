@@ -1,0 +1,5 @@
+*.resource.yaml
+*.variable.yaml
+wmill-lock.yaml
+__pycache__/
+*.pyc

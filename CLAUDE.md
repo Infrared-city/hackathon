@@ -114,11 +114,24 @@ Set under `hackathon` project → Settings → Environment variables:
 
 ## Wiring up the backend (still needed before launch)
 
-1. **NocoDB tables** — create `hackathon_keys`, `hackathon_participants`, `hackathon_submissions` in NocoDB UI
-2. **Import keys** — `python3 scripts/import_keys.py <TABLE_ID>` (reads `~/ir-hackathon26-keys.csv`)
-3. **Windmill flows** — `f/hackathon/request_key`, `f/hackathon/submit_project`, `f/hackathon/register_participant`
-4. **HubSpot** — fresh Private App token with `crm.objects.contacts.write` scope → add to Windmill as resource
-5. **Resend** — sign up, verify `infrared.city` domain, add API key to Windmill as `$var:resend_api_key`
+Windmill scripts already live in `windmill/f/hackathon/` and auto-deploy via
+`.github/workflows/windmill-deploy.yml` when you push to `main`.
+
+Order of operations:
+
+1. **NocoDB tables** — create three tables at `nocodb.team.infrared.city`:
+   - `hackathon_keys` — columns: `name`, `key_id`, `raw_key`, `status` (default `available`), `assigned_to_team`, `assigned_email`, `assigned_at`
+   - `hackathon_participants` — `team_name`, `email`, `nickname`, `skills`, `project_idea`, `looking_for_team`, `key_name`, `registered_at`
+   - `hackathon_submissions` — `api_key`, `team_name`, `project_title`, `description`, `tracks`, `github_url`, `demo_url`, `submitted_at`
+2. **Import keys** — `source ~/.run8n.env && python3 scripts/import_keys.py <hackathon_keys_table_id>`
+3. **Windmill variables** (Windmill UI → Variables, all under folder `f/hackathon/`):
+   - `noco_keys_table_id` — copy table ID from NocoDB URL
+   - `noco_participants_table_id`
+   - `noco_submissions_table_id`
+   - `hubspot_token` (secret) — HubSpot Private App, scope: `crm.objects.contacts.write`
+   - `resend_api_key` (secret) — from resend.com after verifying `infrared.city`
+4. **Windmill deploy** — `git push origin main` triggers `windmill-deploy.yml`. The `WINDMILL_IR_TOKEN` repo secret must already be set.
+5. **Scoped trigger token** — Windmill UI → Account Settings → Tokens → create a token scoped to `f/hackathon/*`. Add as `VITE_WINDMILL_TRIGGER_TOKEN` on CF Pages.
 6. **Custom domain** — CF Pages → `hackathon` project → Custom domains → `hackathon.infrared.city`
 
 ## Key deactivation

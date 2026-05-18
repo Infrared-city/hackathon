@@ -1,0 +1,39 @@
+summary: Hackathon — claim API key + register participant
+description: |
+  Atomically claims the next available `svc_ir_hackathon26_*` API key from the
+  NocoDB `hackathon_keys` pool, creates a participant record on the canvas,
+  pushes the contact to HubSpot, and emails the key via Resend.
+
+  Used by the hackathon landing page `/get-key` form.
+  Webhook endpoint should be called via `run_wait_result` (sync) so the key
+  is returned in the response body.
+schema:
+  $schema: 'https://json-schema.org/draft/2020-12/schema'
+  type: object
+  properties:
+    team_name:
+      type: string
+      description: Team name shown on the participant canvas
+    email:
+      type: string
+      format: email
+      description: Email where the API key is also delivered
+    nickname:
+      type: string
+      description: Display name on the canvas
+    skills:
+      type: array
+      items: { type: string }
+      description: Skill chips (Python, React, GIS, ...)
+    project_idea:
+      type: string
+      default: ""
+      description: Optional one-line pitch (max 200 chars on UI)
+    looking_for_team:
+      type: boolean
+      default: true
+  required:
+    - team_name
+    - email
+    - nickname
+    - skills

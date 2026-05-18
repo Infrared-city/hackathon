@@ -1,0 +1,35 @@
+summary: Hackathon — record a project submission
+description: |
+  Validates that the provided API key was issued by `request_key` and records
+  a submission row in the NocoDB `hackathon_submissions` table.
+
+  Used by the hackathon `/submit` form.
+schema:
+  $schema: 'https://json-schema.org/draft/2020-12/schema'
+  type: object
+  properties:
+    api_key:
+      type: string
+      description: The hackathon API key issued to the team
+    team_name:
+      type: string
+    project_title:
+      type: string
+    description:
+      type: string
+    tracks:
+      type: array
+      items: { type: string }
+      description: Challenge tracks targeted (Urban Heat, Wind, ...)
+    github_url:
+      type: string
+      default: ""
+    demo_url:
+      type: string
+      default: ""
+  required:
+    - api_key
+    - team_name
+    - project_title
+    - description
+    - tracks

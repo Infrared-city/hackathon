@@ -1,0 +1,12 @@
+defaultTs: bun
+
+includes:
+  - f/hackathon/**
+
+excludes:
+  - "**/__pycache__/**"
+  - "**/*.tmp"
+
+skipVariables: true
+skipResources: true
+skipSecrets: true
