@@ -37,7 +37,8 @@ const linkStyle: React.CSSProperties = {
   display: 'inline-flex',
   alignItems: 'center',
   gap: 6,
-  padding: '8px 14px',
+  padding: '10px 14px',
+  minHeight: 44,
   border: `1px solid ${colors.border}`,
   borderRadius: 8,
   fontFamily: fonts.mono,
@@ -48,6 +49,7 @@ const linkStyle: React.CSSProperties = {
   textDecoration: 'none',
   background: 'transparent',
   transition: 'border-color 0.15s, color 0.15s',
+  boxSizing: 'border-box',
 }
 
 export function AddToCalendar() {

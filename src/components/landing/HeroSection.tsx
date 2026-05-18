@@ -34,14 +34,8 @@ export function HeroSection() {
       />
 
       <div
-        style={{
-          position: 'relative',
-          zIndex: 1,
-          display: 'grid',
-          gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)',
-          gap: 'clamp(32px, 5vw, 72px)',
-          alignItems: 'center',
-        }}
+        className="two-col-stack"
+        style={{ position: 'relative', zIndex: 1 }}
       >
         {/* ── Left: text ── */}
         <div>
@@ -89,10 +83,8 @@ export function HeroSection() {
 
           {/* stats bar */}
           <div
+            className="hero-stats"
             style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: 1,
               border: `1px solid ${colors.border}`,
               background: colors.border,
               borderRadius: 10,

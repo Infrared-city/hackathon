@@ -69,6 +69,7 @@ export function WaitlistForm({ source, compact }: WaitlistFormProps) {
   return (
     <form
       onSubmit={submit}
+      className="waitlist-form"
       style={{
         display: 'flex',
         flexWrap: 'wrap',

@@ -52,9 +52,8 @@ export function TimelineSection() {
         {days.map((day, i) => (
           <div
             key={day.date}
+            className="timeline-row"
             style={{
-              display: 'grid',
-              gridTemplateColumns: '180px 1fr',
               background: colors.bgSurface,
               border: `1px solid ${colors.border}`,
               borderRadius: i === 0 ? '10px 10px 0 0' : i === days.length - 1 ? '0 0 10px 10px' : 0,
@@ -98,8 +97,9 @@ export function TimelineSection() {
             {/* Events column */}
             <div style={{ padding: '16px 24px', display: 'grid', gap: 10 }}>
               {day.events.map((ev) => (
-                <div key={ev.title} style={{ display: 'flex', gap: 16, alignItems: 'baseline' }}>
+                <div key={ev.title} className="timeline-event" style={{ display: 'flex', gap: 16, alignItems: 'baseline' }}>
                   <div
+                    className="timeline-event-time"
                     style={{
                       fontFamily: fonts.mono,
                       fontSize: 11,

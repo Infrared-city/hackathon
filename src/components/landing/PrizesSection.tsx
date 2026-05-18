@@ -48,6 +48,7 @@ export function PrizesSection() {
         {prizes.map((p) => (
           <div
             key={p.rank}
+            className="prize-card"
             style={{
               background: p.highlight
                 ? `linear-gradient(160deg, rgba(35,229,229,0.07), ${colors.bgSurface})`
@@ -70,7 +71,7 @@ export function PrizesSection() {
               {p.rank}
             </div>
             <div
-              className={p.highlight ? 'text-gradient' : undefined}
+              className={`${p.highlight ? 'text-gradient prize-amount-large' : 'prize-amount'}`}
               style={{
                 fontFamily: fonts.display,
                 fontSize: p.highlight ? '3rem' : '2.25rem',

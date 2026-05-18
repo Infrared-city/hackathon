@@ -18,15 +18,15 @@ export function SDKVisualSection() {
           </p>
         </div>
 
-        {/* Playground iframe */}
+        {/* Playground iframe — aspect ratio handled by .sdk-playground-frame
+            (16:10 desktop, ≥520px fixed height on phones). */}
         <div
+          className="sdk-playground-frame"
           style={{
             borderRadius: 16,
             overflow: 'hidden',
             border: `1px solid ${colors.border}`,
             boxShadow: '0 0 80px rgba(35,229,229,0.08), 0 24px 64px rgba(0,0,0,0.5)',
-            position: 'relative',
-            aspectRatio: '16 / 10',
           }}
         >
           <iframe
@@ -66,14 +66,8 @@ export function SDKVisualSection() {
 
       {/* ── AI agents row ── */}
       <section
-        className="scroll-animate"
-        style={{
-          ...sectionStyle,
-          display: 'grid',
-          gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)',
-          gap: 'clamp(32px, 5vw, 64px)',
-          alignItems: 'center',
-        }}
+        className="scroll-animate two-col-stack"
+        style={sectionStyle}
       >
         <div>
           <div style={eyebrowStyle}>Infrared Skills</div>

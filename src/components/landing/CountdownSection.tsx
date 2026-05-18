@@ -24,7 +24,7 @@ function calcTimeLeft(target: Date): TimeLeft | null {
 
 function Digit({ value, label }: { value: number; label: string }) {
   return (
-    <div style={{ textAlign: 'center', minWidth: 72 }}>
+    <div className="countdown-digit" style={{ textAlign: 'center', minWidth: 72 }}>
       <div
         style={{
           background: colors.bgSurface,
@@ -32,7 +32,7 @@ function Digit({ value, label }: { value: number; label: string }) {
           borderRadius: 10,
           padding: '14px 10px',
           fontFamily: fonts.display,
-          fontSize: 'clamp(2rem, 4vw, 3.25rem)',
+          fontSize: 'clamp(1.75rem, 4vw, 3.25rem)',
           fontWeight: 300,
           color: colors.textH,
           lineHeight: 1,
@@ -105,7 +105,7 @@ export function CountdownSection({ inline }: CountdownSectionProps) {
           Registration opens {launchStr}
         </div>
         {timeLeft && (
-          <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 24 }}>
+          <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 24 }}>
             <Digit value={timeLeft.days}    label="days"    />
             <Digit value={timeLeft.hours}   label="hours"   />
             <Digit value={timeLeft.minutes} label="minutes" />
@@ -158,7 +158,7 @@ export function CountdownSection({ inline }: CountdownSectionProps) {
         {launchStr}
       </h2>
       {timeLeft && (
-        <div style={{ display: 'flex', gap: 20, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 36 }}>
+        <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 36 }}>
           <Digit value={timeLeft.days}    label="days"    />
           <Digit value={timeLeft.hours}   label="hours"   />
           <Digit value={timeLeft.minutes} label="minutes" />
