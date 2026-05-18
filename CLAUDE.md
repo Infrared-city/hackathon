@@ -112,10 +112,15 @@ Set under `hackathon` project → Settings → Environment variables:
 | `CLOUDFLARE_API_TOKEN` | CF API token with Pages:Edit permission |
 | `CLOUDFLARE_ACCOUNT_ID` | `76766acc855cf7634a25fa485a4f5e52` |
 
-## Wiring up the backend (still needed before launch)
+## Backend (Windmill)
 
-Windmill scripts already live in `windmill/f/hackathon/` and auto-deploy via
-`.github/workflows/windmill-deploy.yml` when you push to `main`.
+**Scripts live in the central `ir-team-windmill` repo**, NOT here.
+- Path: `~/01_Projects/00_infrared/ir-team-windmill/f/hackathon/`
+- Edits there → push to main → ir-team-windmill GitHub Actions auto-deploys to `windmill.team.infrared.city` via scoped deploy token.
+- Three scripts: `request_key`, `submit_project`, `register_participant`.
+- Never push Windmill scripts directly with `wmill script push` — always go via the ir-team-windmill repo.
+
+## Wiring checklist
 
 Order of operations:
 
@@ -130,8 +135,8 @@ Order of operations:
    - `noco_submissions_table_id`
    - `hubspot_token` (secret) — HubSpot Private App, scope: `crm.objects.contacts.write`
    - `resend_api_key` (secret) — from resend.com after verifying `infrared.city`
-4. **Windmill deploy** — `git push origin main` triggers `windmill-deploy.yml`. The `WINDMILL_IR_TOKEN` repo secret must already be set.
-5. **Scoped trigger token** — Windmill UI → Account Settings → Tokens → create a token scoped to `f/hackathon/*`. Add as `VITE_WINDMILL_TRIGGER_TOKEN` on CF Pages.
+4. **Windmill deploy** — push the scripts in `ir-team-windmill/f/hackathon/` to `main`. GitHub Actions on that repo deploys them via `WINDMILL_DEPLOY_TOKEN` (scoped, not admin).
+5. **Scoped trigger token** — Windmill UI → Account Settings → Tokens → create a token with scopes `jobs:run:scripts:f/hackathon/request_key`, `...submit_project`, `...register_participant`. Add as `VITE_WINDMILL_TRIGGER_TOKEN` on CF Pages. **Never put `WINDMILL_IR_TOKEN` (admin) in CF Pages env or in the bundle.**
 6. **Custom domain** — CF Pages → `hackathon` project → Custom domains → `hackathon.infrared.city`
 
 ## Key deactivation
