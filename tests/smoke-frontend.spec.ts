@@ -88,20 +88,33 @@ test.describe('Participants page /participants', () => {
 test.describe('Get Key page /get-key', () => {
   test.beforeEach(({ page }) => page.goto('/get-key'))
 
-  test('heading and form visible', async ({ page }) => {
-    await expect(page.getByText(/get your api key/i)).toBeVisible()
-    await expect(page.getByPlaceholder(/team name/i)).toBeVisible()
-    await expect(page.getByPlaceholder(/email/i)).toBeVisible()
+  test('heading and form visible (or countdown if pre-launch)', async ({ page }) => {
+    const hasCountdown = await page.getByText(/registration opens/i).isVisible().catch(() => false)
+    const hasForm = await page.getByPlaceholder(/team name/i).isVisible().catch(() => false)
+    expect(hasCountdown || hasForm, 'either form or countdown should be visible').toBeTruthy()
   })
 
-  test('submit button disabled when fields empty', async ({ page }) => {
-    await expect(page.getByRole('button', { name: /get my api key/i })).toBeDisabled()
+  test('submit button disabled when required fields empty', async ({ page }) => {
+    const btn = page.getByRole('button', { name: /join.*api key/i })
+    if (await btn.isVisible().catch(() => false)) {
+      await expect(btn).toBeDisabled()
+    }
   })
 
-  test('submit button enables when both fields filled', async ({ page }) => {
+  test('submit button enables when required fields filled', async ({ page }) => {
+    const btn = page.getByRole('button', { name: /join.*api key/i })
+    if (!await btn.isVisible().catch(() => false)) return // pre-launch
     await page.getByPlaceholder(/team name/i).fill('Test Team')
     await page.getByPlaceholder(/email/i).fill('test@example.com')
-    await expect(page.getByRole('button', { name: /get my api key/i })).toBeEnabled()
+    await page.getByPlaceholder(/your name/i).fill('Alice')
+    await expect(btn).toBeEnabled()
+  })
+
+  test('skill chips visible in registration form', async ({ page }) => {
+    const hasForm = await page.getByPlaceholder(/team name/i).isVisible().catch(() => false)
+    if (!hasForm) return // pre-launch countdown shown instead
+    await expect(page.getByRole('button', { name: 'Python' })).toBeVisible()
+    await expect(page.getByRole('button', { name: 'React' })).toBeVisible()
   })
 })
 

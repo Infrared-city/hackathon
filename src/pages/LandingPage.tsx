@@ -1,16 +1,17 @@
 import { useEffect } from 'react'
 import { colors, fonts } from '../components/landing/tokens'
-import { HeroSection } from '../components/landing/HeroSection'
-import { TimelineSection } from '../components/landing/TimelineSection'
-import { TracksSection } from '../components/landing/TracksSection'
-import { PrizesSection } from '../components/landing/PrizesSection'
-import { QuickStartSection } from '../components/landing/QuickStartSection'
-import { ResourcesSection } from '../components/landing/ResourcesSection'
-import { FaqSection } from '../components/landing/FaqSection'
-import { FinalCtaSection } from '../components/landing/FinalCtaSection'
+import { HeroSection }        from '../components/landing/HeroSection'
+import { CountdownSection }   from '../components/landing/CountdownSection'
+import { SDKVisualSection }   from '../components/landing/SDKVisualSection'
+import { TracksSection }      from '../components/landing/TracksSection'
+import { PrizesSection }      from '../components/landing/PrizesSection'
+import { QuickStartSection }  from '../components/landing/QuickStartSection'
+import { TimelineSection }    from '../components/landing/TimelineSection'
+import { ResourcesSection }   from '../components/landing/ResourcesSection'
+import { FaqSection }         from '../components/landing/FaqSection'
+import { FinalCtaSection }    from '../components/landing/FinalCtaSection'
 
 export function LandingPage() {
-  // Wire IntersectionObserver for .scroll-animate sections (fade-in on enter)
   useEffect(() => {
     const elements = document.querySelectorAll('.scroll-animate')
     const observer = new IntersectionObserver(
@@ -22,7 +23,7 @@ export function LandingPage() {
           }
         }
       },
-      { threshold: 0.12, rootMargin: '0px 0px -60px 0px' },
+      { threshold: 0.1, rootMargin: '0px 0px -60px 0px' },
     )
     elements.forEach((el) => observer.observe(el))
     return () => observer.disconnect()
@@ -38,10 +39,12 @@ export function LandingPage() {
       }}
     >
       <HeroSection />
-      <TimelineSection />
+      <CountdownSection />
+      <SDKVisualSection />
       <TracksSection />
       <PrizesSection />
       <QuickStartSection />
+      <TimelineSection />
       <ResourcesSection />
       <FaqSection />
       <FinalCtaSection />

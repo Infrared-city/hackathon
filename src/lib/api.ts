@@ -34,8 +34,14 @@ async function nocoGet(tableId: string, params = '') {
 }
 
 export const api = {
-  requestKey: (body: { team_name: string; email: string }) =>
-    windmill(ENDPOINTS.requestKey, body),
+  requestKey: (body: {
+    team_name: string
+    email: string
+    nickname: string
+    skills: string[]
+    project_idea?: string
+    looking_for_team: boolean
+  }) => windmill(ENDPOINTS.requestKey, body),
 
   submitProject: (body: unknown) =>
     windmill(ENDPOINTS.submitProject, body),

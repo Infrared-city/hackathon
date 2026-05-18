@@ -1,47 +1,49 @@
 import { colors, fonts, sectionStyle, h2Style, eyebrowStyle } from './tokens'
 
+const CDN = 'https://pub-196eb52bea2944ac94bf7d6015f31748.r2.dev'
+
 const tracks = [
   {
-    icon: '🌡',
     title: 'Urban Heat',
     apis: 'UTCI · Thermal Comfort Statistics',
     body: 'Map heat stress, find cool corridors, quantify the impact of tree planting.',
+    img: `${CDN}/media/image/72la5kotgtpi/optimised.jpg`,
   },
   {
-    icon: '💨',
     title: 'Wind & Pedestrian Safety',
     apis: 'Wind Speed · Pedestrian Wind Comfort',
     body: 'Audit developments for Lawson Class E unsafe zones.',
+    img: `${CDN}/media/image/j2cjjpkvv1j6/optimised.jpg`,
   },
   {
-    icon: '☀️',
     title: 'Solar Access & Energy',
     apis: 'Direct Sun Hours · Daylight · Solar Radiation',
     body: 'Solar equity, PV siting, daylighting compliance.',
+    img: `${CDN}/media/image/8qr9dn9drf8k/optimised.jpg`,
   },
   {
-    icon: '🌍',
     title: 'Climate Adaptation',
     apis: 'All 8 analyses · seasonal',
     body: 'Before/after scenario comparison, green infrastructure ROI.',
+    img: `${CDN}/media/image/c9glcf6lj0vm/optimised.jpg`,
   },
   {
-    icon: '🤖',
-    title: 'AI Agents',
+    title: 'AI Agents & Urban Intelligence',
     apis: 'Natural language → simulation → report',
-    body: 'Build an agent using the Infrared SKILL.md interface (works with Claude Code, Cursor, Copilot).',
+    body: 'Build an agent using the Infrared SKILL.md interface — works with Claude Code, Cursor, Copilot.',
+    img: `${CDN}/media/image/er7xea79kb98/optimised.jpg`,
   },
   {
-    icon: '🏙️',
     title: 'Digital Climate Twin',
     apis: 'SDK + live weather',
     body: 'Near-real-time climate monitoring dashboard for a neighbourhood.',
+    img: `${CDN}/media/image/knt968q18gvf/optimised.jpg`,
   },
   {
-    icon: '🔓',
     title: 'Open',
     apis: 'Any use of the Infrared SDK',
     body: 'Surprise us.',
+    img: `${CDN}/media/image/7opse7szf1w2/optimised.jpg`,
   },
 ]
 
@@ -70,44 +72,66 @@ export function TracksSection() {
               background: colors.bgSurface,
               border: `1px solid ${colors.border}`,
               borderRadius: 12,
-              padding: 28,
-              transition: 'border-color 0.2s, transform 0.2s',
+              overflow: 'hidden',
+              transition: 'border-color 0.2s, transform 0.2s, box-shadow 0.2s',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.borderColor = colors.cyanBorder
-              e.currentTarget.style.transform = 'translateY(-2px)'
+              e.currentTarget.style.transform = 'translateY(-3px)'
+              e.currentTarget.style.boxShadow = `0 12px 40px rgba(35,229,229,0.08)`
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.borderColor = colors.border
               e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.boxShadow = 'none'
             }}
           >
-            <div style={{ fontSize: 28, marginBottom: 16, lineHeight: 1 }}>{t.icon}</div>
-            <h3
-              style={{
-                fontFamily: fonts.display,
-                fontSize: '1.2rem',
-                fontWeight: 400,
-                color: colors.textH,
-                marginBottom: 8,
-                lineHeight: 1.3,
-              }}
-            >
-              {t.title}
-            </h3>
-            <div
-              style={{
-                fontFamily: fonts.mono,
-                fontSize: 11,
-                letterSpacing: '0.06em',
-                color: colors.cyan,
-                marginBottom: 12,
-                textTransform: 'uppercase',
-              }}
-            >
-              {t.apis}
+            {/* Image thumbnail */}
+            <div style={{ position: 'relative', height: 140, overflow: 'hidden' }}>
+              <img
+                src={t.img}
+                alt={`${t.title} simulation example`}
+                loading="lazy"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+              />
+              <div
+                aria-hidden
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(to bottom, rgba(9,28,31,0.1) 40%, rgba(9,28,31,0.85) 100%)',
+                }}
+              />
             </div>
-            <p style={{ fontSize: 14, lineHeight: 1.65, color: colors.textBody }}>{t.body}</p>
+
+            {/* Card body */}
+            <div style={{ padding: 24 }}>
+              <h3
+                style={{
+                  fontFamily: fonts.display,
+                  fontSize: '1.1rem',
+                  fontWeight: 400,
+                  color: colors.textH,
+                  marginBottom: 8,
+                  lineHeight: 1.3,
+                }}
+              >
+                {t.title}
+              </h3>
+              <div
+                style={{
+                  fontFamily: fonts.mono,
+                  fontSize: 10,
+                  letterSpacing: '0.06em',
+                  color: colors.cyan,
+                  marginBottom: 10,
+                  textTransform: 'uppercase',
+                }}
+              >
+                {t.apis}
+              </div>
+              <p style={{ fontSize: 13, lineHeight: 1.65, color: colors.textBody, margin: 0 }}>{t.body}</p>
+            </div>
           </div>
         ))}
       </div>
