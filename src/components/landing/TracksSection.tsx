@@ -58,9 +58,20 @@ const tracks: Track[] = [
   },
 ]
 
-function TrackCard({ t, record }: { t: Track; record: boolean }) {
+type TrackCardProps = {
+  t: Track
+  record: boolean
+  onVideoEl?: (el: HTMLVideoElement | null) => void
+}
+
+function TrackCard({ t, record, onVideoEl }: TrackCardProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const imgStyle = t.imgPosition ? { objectPosition: t.imgPosition } : undefined
+
+  const setVideoEl = (el: HTMLVideoElement | null) => {
+    videoRef.current = el
+    onVideoEl?.(el)
+  }
 
   const handleEnter = () => {
     if (record) return
@@ -93,14 +104,13 @@ function TrackCard({ t, record }: { t: Track; record: boolean }) {
         />
         {t.video && (
           <video
-            ref={videoRef}
+            ref={setVideoEl}
             src={t.video}
             className="track-video"
             muted
             playsInline
             preload={record ? 'auto' : 'none'}
             loop
-            autoPlay={record}
             aria-hidden
             style={imgStyle}
           />
@@ -143,6 +153,16 @@ export function TracksSection() {
     typeof window !== 'undefined' &&
     new URLSearchParams(window.location.search).has('record')
 
+  const videosRef = useRef<(HTMLVideoElement | null)[]>([])
+
+  const playAll = () => {
+    videosRef.current.forEach((v) => {
+      if (!v) return
+      v.currentTime = 0
+      v.play().catch(() => {})
+    })
+  }
+
   return (
     <section className="scroll-animate" style={sectionStyle}>
       <div style={{ textAlign: 'center', marginBottom: 56 }}>
@@ -153,9 +173,29 @@ export function TracksSection() {
         </p>
       </div>
 
+      {record && (
+        <div style={{ textAlign: 'center', marginBottom: 24 }}>
+          <button
+            type="button"
+            onClick={playAll}
+            className="btn-primary"
+            style={{ padding: '10px 20px', fontSize: 13 }}
+          >
+            ▶ Play all (record mode)
+          </button>
+        </div>
+      )}
+
       <div className={`tracks-grid${record ? ' tracks-record' : ''}`}>
-        {tracks.map((t) => (
-          <TrackCard key={t.title} t={t} record={record} />
+        {tracks.map((t, i) => (
+          <TrackCard
+            key={t.title}
+            t={t}
+            record={record}
+            onVideoEl={(el) => {
+              videosRef.current[i] = el
+            }}
+          />
         ))}
       </div>
 
