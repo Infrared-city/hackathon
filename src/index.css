@@ -187,6 +187,12 @@ pre {
   opacity: 1;
 }
 
+/* Record mode (?record): all videos visible+playing simultaneously
+   so a screen recording can capture the whole grid at once. */
+.tracks-record .track-video {
+  opacity: 1;
+}
+
 /* Open-track pill — sits below the challenge grid */
 .open-pill {
   display: inline-flex;

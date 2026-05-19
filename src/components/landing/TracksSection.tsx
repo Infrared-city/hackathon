@@ -58,17 +58,19 @@ const tracks: Track[] = [
   },
 ]
 
-function TrackCard({ t }: { t: Track }) {
+function TrackCard({ t, record }: { t: Track; record: boolean }) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const imgStyle = t.imgPosition ? { objectPosition: t.imgPosition } : undefined
 
   const handleEnter = () => {
+    if (record) return
     const v = videoRef.current
     if (!v) return
     v.currentTime = 0
     v.play().catch(() => {})
   }
   const handleLeave = () => {
+    if (record) return
     const v = videoRef.current
     if (!v) return
     v.pause()
@@ -96,8 +98,9 @@ function TrackCard({ t }: { t: Track }) {
             className="track-video"
             muted
             playsInline
-            preload="none"
+            preload={record ? 'auto' : 'none'}
             loop
+            autoPlay={record}
             aria-hidden
             style={imgStyle}
           />
@@ -136,6 +139,10 @@ function TrackCard({ t }: { t: Track }) {
 }
 
 export function TracksSection() {
+  const record =
+    typeof window !== 'undefined' &&
+    new URLSearchParams(window.location.search).has('record')
+
   return (
     <section className="scroll-animate" style={sectionStyle}>
       <div style={{ textAlign: 'center', marginBottom: 56 }}>
@@ -146,9 +153,9 @@ export function TracksSection() {
         </p>
       </div>
 
-      <div className="tracks-grid">
+      <div className={`tracks-grid${record ? ' tracks-record' : ''}`}>
         {tracks.map((t) => (
-          <TrackCard key={t.title} t={t} />
+          <TrackCard key={t.title} t={t} record={record} />
         ))}
       </div>
 
