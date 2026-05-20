@@ -4,3 +4,6 @@ export const HACKATHON_START = new Date('2026-05-27T15:00:00Z')
 export const HACKATHON_END   = new Date('2026-05-31T22:00:00Z')
 // Winner announcement: Tue June 2, 17:00 CET
 export const WINNER_DATE     = new Date('2026-06-02T15:00:00Z')
+
+// IAAC cohort participating — added to public waitlist count
+export const IAAC_BONUS = 12

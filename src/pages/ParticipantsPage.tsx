@@ -5,6 +5,7 @@ import { CanvasView, ListView } from './_participantViews'
 import { useStatus } from '../lib/useStatus'
 import { CountdownSection } from '../components/landing/CountdownSection'
 import { ParticipantJoinForm } from './_ParticipantJoinForm'
+import { IAAC_BONUS } from '../lib/config'
 
 type ViewMode = 'canvas' | 'list'
 
@@ -47,6 +48,11 @@ export function ParticipantsPage() {
   const [skillFilters, setSkillFilters] = useState<string[]>([])
   const [formOpen, setFormOpen] = useState(false)
   const [successName, setSuccessName] = useState<string | null>(null)
+  const [waitlistCount, setWaitlistCount] = useState<number | null>(null)
+
+  useEffect(() => {
+    api.getWaitlistCount().then(setWaitlistCount).catch(() => {})
+  }, [])
 
   async function fetchParticipants() {
     setLoading(true)
@@ -85,14 +91,23 @@ export function ParticipantsPage() {
   }
 
   if (status.registration === 'locked') {
+    const total = waitlistCount !== null ? waitlistCount + IAAC_BONUS : null
     return (
       <div style={{ maxWidth: 640, margin: '0 auto', padding: '64px 32px' }}>
         <header style={{ textAlign: 'center', marginBottom: 40 }}>
-          <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.6rem)', marginBottom: 12 }}>
+          <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.6rem)', marginBottom: 24 }}>
             Who&apos;s <span className="text-gradient">building?</span>
           </h1>
+          {total !== null && (
+            <div style={{ marginBottom: 20 }}>
+              <span className="text-gradient" style={{ fontSize: 'clamp(3rem, 8vw, 4.5rem)', fontWeight: 700, lineHeight: 1 }}>
+                {total}
+              </span>
+              <p style={{ color: 'var(--text)', fontSize: 14, marginTop: 6 }}>builders already signed up</p>
+            </div>
+          )}
           <p style={{ color: 'var(--text)', fontSize: 16, lineHeight: 1.6 }}>
-            The participant canvas goes live when registration opens. Sign up to be notified.
+            The participant canvas goes live when registration opens.
           </p>
           <a href="/" className="btn-primary" style={{ display: 'inline-block', marginTop: 24 }}>
             Join the waitlist

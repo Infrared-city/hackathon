@@ -15,6 +15,7 @@ const ENDPOINTS = {
 // NocoDB public read (read-only token, safe to expose)
 const NOCODB_BASE = 'https://nocodb.team.infrared.city/api/v2'
 const NOCODB_READ_TOKEN = import.meta.env.VITE_NOCODB_READ_TOKEN ?? ''
+const NOCO_WAITLIST_TABLE = 'mrw0yjngib2o7pi'
 
 async function windmill(endpoint: string, body: unknown) {
   const token = import.meta.env.VITE_WINDMILL_TRIGGER_TOKEN ?? ''
@@ -64,4 +65,9 @@ export const api = {
 
   getSubmissions: () =>
     nocoGet(import.meta.env.VITE_NOCO_SUBMISSIONS_TABLE ?? '', 'limit=200&sort=-submitted_at'),
+
+  getWaitlistCount: async (): Promise<number> => {
+    const d = await nocoGet(NOCO_WAITLIST_TABLE, 'limit=1')
+    return (d?.pageInfo?.totalRows as number) ?? 0
+  },
 }
