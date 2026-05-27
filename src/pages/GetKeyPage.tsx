@@ -1,4 +1,5 @@
 import { CountdownSection } from '../components/landing/CountdownSection'
+import { WaitlistForm } from '../components/landing/WaitlistForm'
 import { useStatus } from '../lib/useStatus'
 
 const PLATFORM_SIGNUP_URL = 'https://app.infrared.city/login'
@@ -66,11 +67,68 @@ export function GetKeyPage() {
 
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: '48px 32px' }}>
+      {/* Happening-now card: collect email so the team can send the meeting
+          invite + onboarding manually within a few minutes. */}
+      <div
+        style={{
+          background: 'rgba(35,229,229,0.06)',
+          border: '1px solid var(--cyan-border)',
+          borderRadius: 14,
+          padding: '24px 26px',
+          marginBottom: 32,
+        }}
+      >
+        <div
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
+            fontFamily: 'var(--font-mono)',
+            fontSize: 11,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: 'var(--cyan)',
+            marginBottom: 10,
+          }}
+        >
+          <span
+            style={{
+              width: 8,
+              height: 8,
+              borderRadius: '50%',
+              background: 'var(--cyan)',
+              boxShadow: '0 0 10px var(--cyan)',
+              display: 'inline-block',
+            }}
+          />
+          Happening now
+        </div>
+        <h2
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(1.3rem, 2.6vw, 1.7rem)',
+            color: 'var(--text-h)',
+            margin: '0 0 10px',
+            fontWeight: 400,
+          }}
+        >
+          The hackathon is live — drop your email
+        </h2>
+        <p style={{ color: 'var(--text)', fontSize: 14, lineHeight: 1.65, margin: '0 0 18px' }}>
+          We'll send the Teams meeting link + a quick onboarding to your inbox within a few minutes.
+        </p>
+        <WaitlistForm
+          source="live"
+          submitLabel="Send me the invite"
+          successMessage="✓ You're in. Meeting invite + onboarding on the way — check your inbox in a few minutes."
+        />
+      </div>
+
       <header style={{ marginBottom: 36 }}>
-        <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', marginBottom: 12 }}>
-          Get your <span className="text-gradient">API key</span>
+        <h1 style={{ fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)', marginBottom: 12 }}>
+          While you wait — <span className="text-gradient">get your API key</span>
         </h1>
-        <p style={{ color: 'var(--text)', fontSize: 16, lineHeight: 1.65, maxWidth: 560 }}>
+        <p style={{ color: 'var(--text)', fontSize: 15, lineHeight: 1.65, maxWidth: 560 }}>
           Each participant signs up individually on the infrared.city platform. Your account starts
           with <strong style={{ color: 'var(--text-h)' }}>10,000 credits free</strong> — that's your
           hackathon budget.

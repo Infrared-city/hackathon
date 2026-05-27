@@ -5,7 +5,7 @@ const days = [
     date: 'Wednesday · May 27',
     label: 'Kickoff',
     events: [
-      { time: '17:00–19:00 CET', title: 'Online kickoff', note: 'SDK intro, challenge prompts, team formation' },
+      { time: '17:00–19:00 CET', title: 'Online kickoff', note: 'SDK intro, challenge prompts, Q&A' },
     ],
   },
   {
