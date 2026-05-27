@@ -112,15 +112,15 @@ export function GetKeyPage() {
             fontWeight: 400,
           }}
         >
-          The hackathon is live — drop your email
+          Join now — drop your email
         </h2>
         <p style={{ color: 'var(--text)', fontSize: 14, lineHeight: 1.65, margin: '0 0 18px' }}>
-          We'll send the Teams meeting link + a quick onboarding to your inbox within a few minutes.
+          We'll email you the Teams meeting link in <strong style={{ color: 'var(--text-h)' }}>1–2 minutes</strong>. Just keep an eye on your inbox.
         </p>
         <WaitlistForm
           source="live"
-          submitLabel="Send me the invite"
-          successMessage="✓ You're in. Meeting invite + onboarding on the way — check your inbox in a few minutes."
+          submitLabel="Send me the meeting link"
+          successMessage="✓ You're in. Meeting link incoming — check your inbox in 1–2 minutes, then join."
         />
       </div>
 
