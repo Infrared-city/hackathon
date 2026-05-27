@@ -77,9 +77,7 @@ export function CountdownSection({ inline }: CountdownSectionProps) {
   if (isEnded) return null
   if (isOpen)  return null // no countdown after opening
 
-  const launchStr = HACKATHON_START.toLocaleDateString('en-GB', {
-    day: 'numeric', month: 'long', year: 'numeric',
-  })
+  const launchStr = 'Today · 17:00 CET'
 
   if (inline) {
     return (
@@ -179,7 +177,7 @@ export function CountdownSection({ inline }: CountdownSectionProps) {
           Get the launch email
         </div>
         <div style={{ fontSize: 13, color: colors.text, marginBottom: 16, lineHeight: 1.5 }}>
-          We'll send the API key form + Discord invite on May 27. No other emails.
+          We'll send the platform signup link + Teams invite at kickoff. No other emails.
         </div>
         <WaitlistForm source="landing" />
       </div>

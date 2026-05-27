@@ -51,8 +51,8 @@ const faqs: { q: string; a: ReactNode }[] = [
     a: <>Each trial account starts with 10,000 credits — plenty for a hackathon. Every analysis runs on real compute, so be reasonable. Need more credits? Ping us in the kickoff chat.</>,
   },
   {
-    q: 'Is there a Discord / chat?',
-    a: <>The link will be sent in the kickoff email on May 27. Sign up on the landing page if you haven't already so you get it.</>,
+    q: 'Is there a chat channel?',
+    a: <>Yes — we run the hackathon on Microsoft Teams. The invite link is sent in the kickoff email. Sign up on the landing page if you haven't already so you get it.</>,
   },
 ]
 
