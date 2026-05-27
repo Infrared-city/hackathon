@@ -3,11 +3,15 @@ import { api } from '../../lib/api'
 import { colors, fonts } from './tokens'
 
 interface WaitlistFormProps {
-  source: 'landing' | 'getkey' | 'footer'
+  source: 'landing' | 'getkey' | 'footer' | 'live'
   compact?: boolean
+  /** Override the default submit-button label */
+  submitLabel?: string
+  /** Override the success message when source default doesn't fit */
+  successMessage?: string
 }
 
-export function WaitlistForm({ source, compact }: WaitlistFormProps) {
+export function WaitlistForm({ source, compact, submitLabel, successMessage }: WaitlistFormProps) {
   const [email, setEmail]     = useState('')
   const [name, setName]       = useState('')
   const [busy, setBusy]       = useState(false)
@@ -46,8 +50,10 @@ export function WaitlistForm({ source, compact }: WaitlistFormProps) {
         }}
       >
         {done === 'subscribed'
-          ? `✓ You're on the list. We'll email ${email} on May 27.`
-          : `You're already on the list. See you May 27!`}
+          ? (successMessage ?? `✓ You're on the list. We'll email ${email} on May 27.`)
+          : (source === 'live'
+              ? `You already signed up — check ${email} for the meeting invite.`
+              : `You're already on the list. See you May 27!`)}
       </div>
     )
   }
@@ -108,7 +114,7 @@ export function WaitlistForm({ source, compact }: WaitlistFormProps) {
           cursor: busy || !email.includes('@') ? 'not-allowed' : 'pointer',
         }}
       >
-        {busy ? '…' : 'Notify me'}
+        {busy ? '…' : (submitLabel ?? 'Notify me')}
       </button>
       {error && (
         <div style={{ flexBasis: '100%', color: '#ff8a8a', fontSize: 12, textAlign: 'center', marginTop: 4 }}>

@@ -55,7 +55,7 @@ export const api = {
   registerParticipant: (body: { nickname: string; skills: string[]; looking_for_team: boolean }) =>
     windmill(ENDPOINTS.registerParticipant, body),
 
-  notifyMe: (body: { email: string; name?: string; source: 'landing' | 'getkey' | 'footer' }) =>
+  notifyMe: (body: { email: string; name?: string; source: 'landing' | 'getkey' | 'footer' | 'live' }) =>
     windmill(ENDPOINTS.notifyMe, body),
 
   status: () => windmill(ENDPOINTS.status, {}) as Promise<{ registration: GateStatus; submission: GateStatus }>,
