@@ -8,8 +8,10 @@ const faqs: { q: string; a: ReactNode }[] = [
     q: 'Do I need an API key?',
     a: (
       <>
-        Yes — get one free on the <a href="/get-key" style={linkStyle}>registration page</a>. One key per team,
-        valid for the duration of the event.
+        Yes. Sign up free on the <a href="https://app.infrared.city/login" target="_blank" rel="noopener noreferrer" style={linkStyle}>infrared.city platform</a>
+        {' '}(Google or email) and your account starts with 10,000 credits — your hackathon budget.
+        Each participant signs up individually. Step-by-step on the{' '}
+        <a href="/get-key" style={linkStyle}>Get API Key page</a>.
       </>
     ),
   },
@@ -46,7 +48,7 @@ const faqs: { q: string; a: ReactNode }[] = [
   },
   {
     q: 'API rate limits / cost?',
-    a: <>Hackathon keys are free for the duration. Each analysis runs on real compute — be reasonable; don't burn the budget on one team. After June 3 the keys auto-deactivate.</>,
+    a: <>Each trial account starts with 10,000 credits — plenty for a hackathon. Every analysis runs on real compute, so be reasonable. Need more credits? Ping us in the kickoff chat.</>,
   },
   {
     q: 'Is there a Discord / chat?',

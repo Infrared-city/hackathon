@@ -48,7 +48,7 @@ export function SubmitPage() {
           <p style={{ color: 'var(--text)', fontSize: 16, lineHeight: 1.7, marginBottom: 28 }}>
             The submission window opens at the hackathon kickoff (May 27) and closes Sunday May 31, 24:00 CET.
           </p>
-          <a href="/get-key" className="btn-primary">Register your team</a>
+          <a href="/get-key" className="btn-primary">Get your API key</a>
         </div>
       </div>
     )

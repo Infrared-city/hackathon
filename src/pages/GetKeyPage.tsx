@@ -1,101 +1,36 @@
-import { useState } from 'react'
-import { api } from '../lib/api'
-import { SKILLS, type KeyResponse } from '../types'
 import { CountdownSection } from '../components/landing/CountdownSection'
 import { useStatus } from '../lib/useStatus'
-import { KeySuccessView } from './_KeySuccessView'
 
-function extractKey(raw: unknown): KeyResponse | null {
-  if (!raw || typeof raw !== 'object') return null
-  const r = raw as Record<string, unknown>
-  const inner = (r.result && typeof r.result === 'object' ? (r.result as Record<string, unknown>) : r)
-  const api_key =
-    (inner.api_key as string | undefined) ??
-    (inner.key as string | undefined) ??
-    (inner.apiKey as string | undefined)
-  if (!api_key) return null
-  return { api_key, key_name: (inner.key_name as string | undefined) ?? (inner.name as string | undefined) ?? '' }
-}
+const PLATFORM_SIGNUP_URL = 'https://app.infrared.city/login'
 
-const inputStyle: React.CSSProperties = {
-  width: '100%',
-  padding: '11px 14px',
-  background: '#091C1F',
-  border: '1px solid rgba(255,255,255,0.08)',
-  borderRadius: 8,
-  color: '#E8F4F4',
-  fontFamily: 'var(--font-sans)',
-  fontSize: 15,
-  outline: 'none',
-  boxSizing: 'border-box',
-}
-
-const labelStyle: React.CSSProperties = {
-  display: 'block',
-  color: '#E8F4F4',
-  fontSize: 13,
-  marginBottom: 6,
-  fontFamily: 'var(--font-display)',
-  letterSpacing: '0.02em',
-}
+const steps = [
+  {
+    n: '1',
+    title: 'Sign up on the platform',
+    body: 'Continue with Google for the fastest path, or use email + password. Free trial — no credit card.',
+  },
+  {
+    n: '2',
+    title: 'Complete your profile',
+    body: 'A few short fields about you and what you\'re building. Takes under a minute.',
+  },
+  {
+    n: '3',
+    title: 'Grab your API key',
+    body: 'Your account starts with 10,000 credits free — plenty for the hackathon. Copy the key from your dashboard and start building.',
+  },
+]
 
 export function GetKeyPage() {
   const { status, loading } = useStatus()
   const regStatus = status.registration
 
-  const [teamName, setTeamName]           = useState('')
-  const [email, setEmail]                 = useState('')
-  const [nickname, setNickname]           = useState('')
-  const [selectedSkills, setSelectedSkills] = useState<string[]>([])
-  const [projectIdea, setProjectIdea]     = useState('')
-  const [lookingForTeam, setLookingForTeam] = useState(true)
-  const [submitting, setSubmitting]       = useState(false)
-  const [error, setError]                 = useState<string | null>(null)
-  const [result, setResult]               = useState<KeyResponse | null>(null)
-  const [copied, setCopied]               = useState(false)
-
-  function toggleSkill(skill: string) {
-    setSelectedSkills((prev) =>
-      prev.includes(skill) ? prev.filter((s) => s !== skill) : [...prev, skill],
-    )
-  }
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    if (!teamName.trim() || !email.trim() || !nickname.trim()) return
-    setSubmitting(true)
-    setError(null)
-    try {
-      const raw = await api.requestKey({
-        team_name: teamName.trim(),
-        email: email.trim(),
-        nickname: nickname.trim(),
-        skills: selectedSkills,
-        project_idea: projectIdea.trim() || undefined,
-        looking_for_team: lookingForTeam,
-      })
-      const parsed = extractKey(raw)
-      if (!parsed) throw new Error('No API key in response')
-      setResult(parsed)
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not complete registration')
-    } finally {
-      setSubmitting(false)
-    }
-  }
-
-  async function copyKey() {
-    if (!result) return
-    try {
-      await navigator.clipboard.writeText(result.api_key)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 1500)
-    } catch { /* ignore */ }
-  }
-
   if (loading) {
-    return <div style={{ maxWidth: 640, margin: '0 auto', padding: '64px 32px', textAlign: 'center', color: 'var(--text)' }}>Loading…</div>
+    return (
+      <div style={{ maxWidth: 640, margin: '0 auto', padding: '64px 32px', textAlign: 'center', color: 'var(--text)' }}>
+        Loading…
+      </div>
+    )
   }
 
   if (regStatus === 'locked') {
@@ -129,201 +64,114 @@ export function GetKeyPage() {
     )
   }
 
-  if (result) {
-    return (
-      <KeySuccessView
-        result={result}
-        nickname={nickname}
-        teamName={teamName}
-        email={email}
-        copied={copied}
-        onCopy={copyKey}
-      />
-    )
-  }
-
-  const canSubmit = teamName.trim() && email.trim() && nickname.trim() && !submitting
-
   return (
-    <div style={{ maxWidth: 680, margin: '0 auto', padding: '48px 32px' }}>
+    <div style={{ maxWidth: 720, margin: '0 auto', padding: '48px 32px' }}>
       <header style={{ marginBottom: 36 }}>
         <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', marginBottom: 12 }}>
-          Join the <span className="text-gradient">Hackathon</span>
+          Get your <span className="text-gradient">API key</span>
         </h1>
-        <p style={{ color: 'var(--text)', fontSize: 16, lineHeight: 1.6 }}>
-          Register your team, choose your skills, and get an API key — all in one step.
-          You'll appear on the participant canvas instantly.
+        <p style={{ color: 'var(--text)', fontSize: 16, lineHeight: 1.65, maxWidth: 560 }}>
+          Each participant signs up individually on the infrared.city platform. Your account starts
+          with <strong style={{ color: 'var(--text-h)' }}>10,000 credits free</strong> — that's your
+          hackathon budget.
         </p>
       </header>
 
-      <form
-        onSubmit={handleSubmit}
+      <ol
         style={{
-          background: 'var(--bg-surface)',
-          border: '1px solid var(--border)',
-          borderRadius: 14,
-          padding: 32,
+          listStyle: 'none',
+          padding: 0,
+          margin: '0 0 36px',
           display: 'grid',
-          gap: 22,
+          gap: 14,
         }}
       >
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-          <div>
-            <label htmlFor="team_name" style={labelStyle}>
-              Team name <span style={{ color: 'var(--cyan)' }}>*</span>
-            </label>
-            <input
-              id="team_name"
-              type="text"
-              required
-              value={teamName}
-              onChange={(e) => setTeamName(e.target.value)}
-              placeholder="Climate Hackers"
-              style={inputStyle}
-            />
-          </div>
-          <div>
-            <label htmlFor="nickname" style={labelStyle}>
-              Your name on canvas <span style={{ color: 'var(--cyan)' }}>*</span>
-            </label>
-            <input
-              id="nickname"
-              type="text"
-              required
-              value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
-              placeholder="Alice"
-              style={inputStyle}
-            />
-          </div>
-        </div>
-
-        <div>
-          <label htmlFor="email" style={labelStyle}>
-            Email <span style={{ color: 'var(--cyan)' }}>*</span>
-          </label>
-          <input
-            id="email"
-            type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@team.com"
-            style={inputStyle}
-          />
-          <div style={{ fontSize: 12, color: 'var(--text)', marginTop: 5 }}>
-            Your key is also sent here. We'll keep you posted on the hackathon.
-          </div>
-        </div>
-
-        <div>
-          <div style={{ ...labelStyle, marginBottom: 10 }}>Skills (select all that apply)</div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-            {SKILLS.map((skill) => {
-              const active = selectedSkills.includes(skill)
-              return (
-                <button
-                  key={skill}
-                  type="button"
-                  onClick={() => toggleSkill(skill)}
-                  style={{
-                    padding: '6px 13px',
-                    fontSize: 12,
-                    fontFamily: 'var(--font-sans)',
-                    borderRadius: 20,
-                    border: `1px solid ${active ? 'var(--cyan)' : 'var(--border)'}`,
-                    background: active ? 'rgba(35,229,229,0.12)' : 'transparent',
-                    color: active ? 'var(--cyan)' : 'var(--text)',
-                    cursor: 'pointer',
-                    transition: 'all 0.15s',
-                  }}
-                >
-                  {skill}
-                </button>
-              )
-            })}
-          </div>
-        </div>
-
-        <div>
-          <label htmlFor="project_idea" style={labelStyle}>
-            What are you planning to build? <span style={{ color: 'var(--text)' }}>(optional)</span>
-          </label>
-          <textarea
-            id="project_idea"
-            value={projectIdea}
-            onChange={(e) => setProjectIdea(e.target.value)}
-            placeholder="A heat risk dashboard for marathon route planning..."
-            rows={2}
-            maxLength={200}
-            style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.5 }}
-          />
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <button
-            type="button"
-            role="switch"
-            aria-checked={lookingForTeam}
-            onClick={() => setLookingForTeam((v) => !v)}
+        {steps.map((s) => (
+          <li
+            key={s.n}
             style={{
-              width: 40,
-              height: 22,
-              borderRadius: 11,
-              background: lookingForTeam ? 'var(--cyan)' : 'var(--border)',
-              border: 'none',
-              cursor: 'pointer',
-              position: 'relative',
-              transition: 'background 0.2s',
-              flexShrink: 0,
+              background: 'var(--bg-surface)',
+              border: '1px solid var(--border)',
+              borderRadius: 12,
+              padding: '20px 22px',
+              display: 'grid',
+              gridTemplateColumns: '40px 1fr',
+              gap: 18,
+              alignItems: 'start',
             }}
           >
             <div
               style={{
-                position: 'absolute',
-                top: 3,
-                left: lookingForTeam ? 21 : 3,
-                width: 16,
-                height: 16,
+                width: 36,
+                height: 36,
                 borderRadius: '50%',
-                background: '#fff',
-                transition: 'left 0.2s',
+                background: 'var(--cyan-dim)',
+                border: '1px solid var(--cyan-border)',
+                color: 'var(--cyan)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontFamily: 'var(--font-display)',
+                fontSize: 16,
               }}
-            />
-          </button>
-          <span style={{ fontSize: 14, color: 'var(--text)' }}>
-            Looking for teammates
-          </span>
-        </div>
+            >
+              {s.n}
+            </div>
+            <div>
+              <div
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 17,
+                  color: 'var(--text-h)',
+                  marginBottom: 4,
+                }}
+              >
+                {s.title}
+              </div>
+              <p style={{ color: 'var(--text)', fontSize: 14, lineHeight: 1.6, margin: 0 }}>
+                {s.body}
+              </p>
+            </div>
+          </li>
+        ))}
+      </ol>
 
-        {error && (
-          <div
-            style={{
-              color: '#ff8a8a',
-              fontSize: 14,
-              background: 'rgba(255,138,138,0.08)',
-              border: '1px solid rgba(255,138,138,0.3)',
-              padding: '10px 14px',
-              borderRadius: 6,
-            }}
-          >
-            {error}
-          </div>
-        )}
-
-        <button
-          type="submit"
+      <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', alignItems: 'center' }}>
+        <a
+          href={PLATFORM_SIGNUP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
           className="btn-primary"
-          disabled={!canSubmit}
-          style={{ opacity: canSubmit ? 1 : 0.5, cursor: canSubmit ? 'pointer' : 'not-allowed', marginTop: 4 }}
+          style={{ padding: '12px 24px', fontSize: 15 }}
         >
-          {submitting ? 'Registering…' : 'Join & get my API key →'}
-        </button>
-      </form>
+          Sign up on the platform →
+        </a>
+        <span style={{ color: 'var(--text)', fontSize: 13 }}>
+          Opens app.infrared.city in a new tab
+        </span>
+      </div>
 
-      <p style={{ marginTop: 18, color: 'var(--text)', fontSize: 12, textAlign: 'center', lineHeight: 1.6 }}>
-        Keys come from a shared hackathon pool of 50 service accounts. Each team gets one key valid for
-        the duration of the event.
+      <div
+        style={{
+          marginTop: 28,
+          background: 'var(--bg-alt)',
+          border: '1px solid var(--border)',
+          borderRadius: 8,
+          padding: '14px 16px',
+          fontSize: 13,
+          color: 'var(--text)',
+          lineHeight: 1.7,
+        }}
+      >
+        <strong style={{ color: 'var(--text-h)' }}>Once you have your key:</strong>{' '}
+        <code style={{ color: 'var(--cyan)', fontFamily: 'var(--font-mono)' }}>pip install infrared-sdk</code>
+        {' '}— then set{' '}
+        <code style={{ color: 'var(--cyan)', fontFamily: 'var(--font-mono)' }}>INFRARED_API_KEY=&lt;your key&gt;</code>
+      </div>
+
+      <p style={{ marginTop: 28, color: 'var(--text)', fontSize: 13, textAlign: 'center', lineHeight: 1.6 }}>
+        Looking for teammates? Browse the{' '}
+        <a href="/participants" style={{ color: 'var(--cyan)' }}>participant canvas →</a>
       </p>
     </div>
   )
