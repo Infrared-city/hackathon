@@ -1,9 +1,10 @@
 import { Link, useLocation } from 'react-router-dom'
 
 const links = [
-  { to: '/',             label: 'Hackathon' },
-  { to: '/participants', label: 'Participants' },
-  { to: '/projects',     label: 'Projects' },
+  { to: '/',               label: 'Hackathon' },
+  { to: '/participants',   label: 'Participants' },
+  { to: '/projects',       label: 'Projects' },
+  { to: '/community-talk', label: 'Community Talk' },
 ]
 
 export function Nav() {

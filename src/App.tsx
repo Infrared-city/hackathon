@@ -5,6 +5,7 @@ import { ParticipantsPage } from './pages/ParticipantsPage'
 import { GetKeyPage }      from './pages/GetKeyPage'
 import { SubmitPage }      from './pages/SubmitPage'
 import { ProjectsPage }    from './pages/ProjectsPage'
+import { CommunityTalkPage } from './pages/CommunityTalkPage'
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="/get-key"      element={<GetKeyPage />} />
           <Route path="/submit"       element={<SubmitPage />} />
           <Route path="/projects"     element={<ProjectsPage />} />
+          <Route path="/community-talk" element={<CommunityTalkPage />} />
         </Routes>
       </Layout>
     </BrowserRouter>
