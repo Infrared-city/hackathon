@@ -2,6 +2,7 @@ import { useEffect, useState, type CSSProperties } from 'react'
 import { api } from '../lib/api'
 import { TRACKS, type Submission } from '../types/index'
 import { ProjectCard } from '../components/projects/ProjectCard'
+import { ProjectModal } from '../components/projects/ProjectModal'
 
 const REFRESH_MS = 30_000
 const SKELETON_COUNT = 6
@@ -10,6 +11,7 @@ export function ProjectsPage() {
   const [items, setItems] = useState<Submission[] | null>(null)
   const [error, setError] = useState<string>('')
   const [track, setTrack] = useState<string>('All')
+  const [selected, setSelected] = useState<Submission | null>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -131,12 +133,13 @@ export function ProjectsPage() {
           ) : (
             <div className="projects-grid">
               {filtered.map((p, i) => (
-                <ProjectCard key={p.id ?? `${p.project_name}-${i}`} project={p} />
+                <ProjectCard key={p.id ?? `${p.project_name}-${i}`} project={p} onOpen={setSelected} />
               ))}
             </div>
           )}
         </div>
       </div>
+      {selected && <ProjectModal project={selected} onClose={() => setSelected(null)} />}
     </>
   )
 }

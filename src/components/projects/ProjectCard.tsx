@@ -58,7 +58,13 @@ const pill = (text: string, key?: string) => (
   </span>
 )
 
-export function ProjectCard({ project }: { project: Submission }) {
+export function ProjectCard({
+  project,
+  onOpen,
+}: {
+  project: Submission
+  onOpen: (p: Submission) => void
+}) {
   const apis = splitList(project.apis_used)
   const tags = splitList(project.tags)
   const shots = parseUrls(project.screenshots)
@@ -67,7 +73,7 @@ export function ProjectCard({ project }: { project: Submission }) {
   const apisExtra = Math.max(0, apis.length - MAX_APIS_SHOWN)
 
   return (
-    <article className="project-card">
+    <article className="project-card" style={{ cursor: 'pointer' }} onClick={() => onOpen(project)}>
       {shots[0] && (
         <img
           src={shots[0]}
@@ -139,7 +145,10 @@ export function ProjectCard({ project }: { project: Submission }) {
         </div>
       )}
 
-      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 'auto', paddingTop: 8 }}>
+      <div
+        style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 'auto', paddingTop: 8 }}
+        onClick={(e) => e.stopPropagation()}
+      >
         {project.github_url && <SmallLink href={project.github_url} label="GitHub" />}
         {project.demo_url && <SmallLink href={project.demo_url} label="Demo" />}
         {project.video_url && <SmallLink href={project.video_url} label="Video" />}

@@ -67,4 +67,16 @@ test.describe('Projects gallery (mocked data)', () => {
     // 4 APIs in data, 3 shown -> "+1 more"
     await expect(page.getByText(/\+1 more/)).toBeVisible()
   })
+
+  test('clicking a card opens a detail modal with full description', async ({ page }) => {
+    await page.goto('/projects')
+    await page.getByText('Urban Cool Mapper').click()
+    await expect(page.getByText('PROBLEM')).toBeVisible()
+    await expect(page.getByText('Cities overheat')).toBeVisible()
+    await expect(page.getByText('SOLUTION')).toBeVisible()
+    await expect(page.getByText('Identify hotspots')).toBeVisible()
+    // close
+    await page.getByRole('button', { name: 'Close' }).click()
+    await expect(page.getByText('PROBLEM')).toBeHidden()
+  })
 })
