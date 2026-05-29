@@ -1,14 +1,22 @@
 import type { CSSProperties, ReactNode } from 'react'
 
-export function Section({ title, children }: { title: string; children: ReactNode }) {
+export function Section({
+  title,
+  step,
+  children,
+}: {
+  title: string
+  step?: number
+  children: ReactNode
+}) {
   return (
     <section
       style={{
         background: 'var(--bg-surface)',
         border: '1px solid var(--border)',
-        borderRadius: 12,
+        borderRadius: 14,
         padding: 24,
-        marginBottom: 20,
+        marginBottom: 18,
       }}
     >
       <h2
@@ -17,8 +25,31 @@ export function Section({ title, children }: { title: string; children: ReactNod
           marginBottom: 20,
           fontFamily: 'var(--font-display)',
           color: 'var(--text-h)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 12,
         }}
       >
+        {step != null && (
+          <span
+            style={{
+              flex: '0 0 auto',
+              width: 30,
+              height: 30,
+              borderRadius: 9,
+              background: 'var(--cyan-dim)',
+              border: '1px solid var(--cyan-border)',
+              color: 'var(--cyan)',
+              fontSize: 15,
+              fontFamily: 'var(--font-mono)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            {step}
+          </span>
+        )}
         {title}
       </h2>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>{children}</div>
