@@ -119,10 +119,31 @@ test.describe('Get Key page /get-key', () => {
 })
 
 test.describe('Submit page /submit', () => {
-  test.beforeEach(({ page }) => page.goto('/submit'))
+  test.beforeEach(async ({ page }) => {
+    // Force the gate open in the UI so the form renders regardless of date/backend.
+    await page.route('**/f/hackathon/status', (route) =>
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ registration: 'open', submission: 'open' }),
+      }),
+    )
+    await page.goto('/submit')
+  })
 
   test('heading visible', async ({ page }) => {
     await expect(page.getByText(/submit your project/i)).toBeVisible()
+  })
+
+  test('new description + media + upload sections render', async ({ page }) => {
+    await expect(page.getByText(/what problem are you solving/i)).toBeVisible()
+    await expect(page.getByText(/how does your project solve/i)).toBeVisible()
+    await expect(page.getByText(/Demo video/i)).toBeVisible()
+    await expect(page.getByText(/Screenshots/i)).toBeVisible()
+    await expect(page.getByTestId('image-input')).toBeAttached()
+    await expect(page.getByTestId('video-input')).toBeAttached()
+    await expect(page.getByTestId('tag-input')).toBeVisible()
+    await expect(page.getByPlaceholder(/account@yourteam/i)).toBeVisible()
   })
 
   test('required fields present', async ({ page }) => {

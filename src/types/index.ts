@@ -16,8 +16,17 @@ export interface Submission {
   demo_url?: string
   video_url?: string
   screenshots?: string[]
+  documents?: string
   apis_used: string[]
   challenge_track: string
+  // Richer description (added for the upload-enabled submission form)
+  problem?: string
+  solution?: string
+  tech_impl?: string
+  target_group?: string
+  tags?: string
+  sdk_feedback?: string
+  prize_email?: string
   submitted_at?: string
   score?: number
 }

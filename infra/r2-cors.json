@@ -1,0 +1,20 @@
+{
+  "rules": [
+    {
+      "id": "hackathon-browser-uploads",
+      "allowed": {
+        "origins": [
+          "http://localhost:5173",
+          "http://localhost:8788",
+          "https://hackathon.infrared.city",
+          "https://hackathon-73i.pages.dev",
+          "https://*.hackathon-73i.pages.dev"
+        ],
+        "methods": ["PUT", "GET", "HEAD"],
+        "headers": ["*"]
+      },
+      "exposeHeaders": ["ETag"],
+      "maxAgeSeconds": 3600
+    }
+  ]
+}

@@ -12,6 +12,16 @@ dist
 dist-ssr
 *.local
 
+# Cloudflare Pages local runtime secrets
+.dev.vars
+.wrangler
+.playwright-cli
+
+# Playwright
+/test-results
+/playwright-report
+tests/fixtures/*.bin
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

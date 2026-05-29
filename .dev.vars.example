@@ -1,0 +1,11 @@
+# Local runtime secrets for `wrangler pages dev` (presign Function).
+# Copy to `.dev.vars` (gitignored) and fill in real values.
+#
+# Create the key pair: Cloudflare dashboard -> R2 -> Manage R2 API Tokens ->
+# Create API Token -> Object Read & Write -> scope to bucket "hackathon-submissions".
+
+R2_ACCOUNT_ID="76766acc855cf7634a25fa485a4f5e52"
+R2_BUCKET="hackathon-submissions"
+R2_PUBLIC_BASE="https://pub-9b430102b05b40a6aa3a156164ecbaaf.r2.dev"
+R2_ACCESS_KEY_ID="<access-key-id-from-r2-token>"
+R2_SECRET_ACCESS_KEY="<secret-access-key-from-r2-token>"

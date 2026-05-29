@@ -64,6 +64,14 @@ export const inputStyle: CSSProperties = {
   transition: 'border-color 0.15s',
 }
 
+export const textareaStyle: CSSProperties = {
+  ...inputStyle,
+  minHeight: 90,
+  resize: 'vertical',
+  lineHeight: 1.5,
+  fontFamily: 'var(--font-sans)',
+}
+
 export const pageStyle: CSSProperties = {
   minHeight: '100vh',
   background: 'var(--bg)',

@@ -1,14 +1,21 @@
 import { useState, type FormEvent } from 'react'
 import { api } from '../lib/api'
-import { APIS, TRACKS } from '../types/index'
+import { TRACKS } from '../types/index'
 import {
   Section,
   Field,
   inputStyle,
+  textareaStyle,
   pageStyle,
   containerStyle,
 } from '../components/ui/FormPrimitives'
 import { useStatus } from '../lib/useStatus'
+import { ImageUploader } from '../components/submit/ImageUploader'
+import { VideoUploader } from '../components/submit/VideoUploader'
+import { DocumentUploader } from '../components/submit/DocumentUploader'
+import { TagInput } from '../components/submit/TagInput'
+import { ApiCheckboxGrid } from '../components/submit/ApiCheckboxGrid'
+import { GateNotice, SuccessView } from './_submitViews'
 
 type Status = 'idle' | 'submitting' | 'success' | 'error'
 
@@ -18,15 +25,18 @@ const emptyForm = {
   project_name: '',
   one_liner: '',
   challenge_track: '',
+  problem: '',
+  solution: '',
+  tech_impl: '',
+  target_group: '',
   team_name: '',
   members: '',
   github_url: '',
   demo_url: '',
-  video_url: '',
   apis_used: [] as string[],
-  screenshot_1: '',
-  screenshot_2: '',
-  screenshot_3: '',
+  tags: [] as string[],
+  sdk_feedback: '',
+  prize_email: '',
 }
 
 type FormState = typeof emptyForm
@@ -34,78 +44,90 @@ type FormState = typeof emptyForm
 export function SubmitPage() {
   const { status: gates, loading: gatesLoading } = useStatus()
   const [form, setForm] = useState<FormState>(emptyForm)
+  const [screenshots, setScreenshots] = useState<string[]>([])
+  const [documents, setDocuments] = useState<string[]>([])
+  const [videoUrl, setVideoUrl] = useState('')
+  const [imagesBusy, setImagesBusy] = useState(false)
+  const [docsBusy, setDocsBusy] = useState(false)
+  const [videoBusy, setVideoBusy] = useState(false)
   const [status, setStatus] = useState<Status>('idle')
-  const [errorMsg, setErrorMsg] = useState<string>('')
+  const [errorMsg, setErrorMsg] = useState('')
 
   if (gatesLoading) {
-    return <div style={pageStyle}><div style={{ ...containerStyle, color: 'var(--text)' }}>Loading…</div></div>
+    return (
+      <div style={pageStyle}>
+        <div style={{ ...containerStyle, color: 'var(--text)' }}>Loading…</div>
+      </div>
+    )
   }
   if (gates.submission === 'locked') {
     return (
-      <div style={pageStyle}>
-        <div style={{ ...containerStyle, textAlign: 'center', paddingTop: 64 }}>
-          <h1 style={{ fontSize: 36, marginBottom: 12 }}>Submissions not yet open</h1>
-          <p style={{ color: 'var(--text)', fontSize: 16, lineHeight: 1.7, marginBottom: 28 }}>
-            The submission window opens at the hackathon kickoff (May 27) and closes Sunday May 31, 24:00 CET.
-          </p>
-          <a href="/get-key" className="btn-primary">Get your API key</a>
-        </div>
-      </div>
+      <GateNotice
+        title="Submissions not yet open"
+        body="The submission window opens at the hackathon kickoff (May 27) and closes Sunday May 31, 24:00 CET."
+        ctaHref="/get-key"
+        ctaLabel="Get your API key"
+      />
     )
   }
   if (gates.submission === 'closed') {
     return (
-      <div style={pageStyle}>
-        <div style={{ ...containerStyle, textAlign: 'center', paddingTop: 64 }}>
-          <h1 style={{ fontSize: 36, marginBottom: 12 }}>Submissions closed</h1>
-          <p style={{ color: 'var(--text)', fontSize: 16, lineHeight: 1.7, marginBottom: 28 }}>
-            The submission window has ended. Browse all submitted projects → demos · winners announced Tue Jun 2.
-          </p>
-          <a href="/projects" className="btn-primary">View projects</a>
-        </div>
-      </div>
+      <GateNotice
+        title="Submissions closed"
+        body="The submission window has ended. Browse all submitted projects · winners announced Tue Jun 2."
+        ctaHref="/projects"
+        ctaLabel="View projects"
+      />
     )
   }
 
-  const update = <K extends keyof FormState>(key: K, value: FormState[K]) => {
+  const update = <K extends keyof FormState>(key: K, value: FormState[K]) =>
     setForm((prev) => ({ ...prev, [key]: value }))
-  }
 
-  const toggleApi = (apiName: string) => {
+  const toggleApi = (apiName: string) =>
     setForm((prev) => ({
       ...prev,
       apis_used: prev.apis_used.includes(apiName)
         ? prev.apis_used.filter((a) => a !== apiName)
         : [...prev.apis_used, apiName],
     }))
-  }
 
   const reset = () => {
     setForm(emptyForm)
+    setScreenshots([])
+    setDocuments([])
+    setVideoUrl('')
     setStatus('idle')
     setErrorMsg('')
   }
 
+  const uploadsBusy = imagesBusy || videoBusy || docsBusy
+
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
+    if (uploadsBusy) return
     setStatus('submitting')
     setErrorMsg('')
-
-    const screenshots = [form.screenshot_1, form.screenshot_2, form.screenshot_3]
-      .map((s) => s.trim())
-      .filter(Boolean)
 
     const body = {
       project_name: form.project_name.trim(),
       one_liner: form.one_liner.trim(),
       challenge_track: form.challenge_track,
+      problem: form.problem.trim(),
+      solution: form.solution.trim(),
+      tech_impl: form.tech_impl.trim() || undefined,
+      target_group: form.target_group.trim() || undefined,
       team_name: form.team_name.trim(),
       members: form.members.trim(),
       github_url: form.github_url.trim(),
       demo_url: form.demo_url.trim() || undefined,
-      video_url: form.video_url.trim() || undefined,
+      video_url: videoUrl.trim() || undefined,
       apis_used: form.apis_used,
+      tags: form.tags,
       screenshots: screenshots.length ? screenshots : undefined,
+      documents: documents.length ? documents : undefined,
+      sdk_feedback: form.sdk_feedback.trim() || undefined,
+      prize_email: form.prize_email.trim() || undefined,
     }
 
     try {
@@ -183,6 +205,52 @@ export function SubmitPage() {
                 ))}
               </select>
             </Field>
+
+            <Field label="Tags" hint={<span style={{ color: 'var(--text)' }}>press Enter</span>}>
+              <TagInput
+                value={form.tags}
+                onChange={(tags) => update('tags', tags)}
+                placeholder="e.g. heat-island, mobility, GIS"
+              />
+            </Field>
+          </Section>
+
+          <Section title="About the project">
+            <Field label="Problem" required>
+              <textarea
+                value={form.problem}
+                onChange={(e) => update('problem', e.target.value)}
+                required
+                style={textareaStyle}
+                placeholder="What problem are you solving?"
+              />
+            </Field>
+            <Field label="Solution" required>
+              <textarea
+                value={form.solution}
+                onChange={(e) => update('solution', e.target.value)}
+                required
+                style={textareaStyle}
+                placeholder="How does your project solve it?"
+              />
+            </Field>
+            <Field label="Technical implementation">
+              <textarea
+                value={form.tech_impl}
+                onChange={(e) => update('tech_impl', e.target.value)}
+                style={textareaStyle}
+                placeholder="Architecture, stack, how you used the Infrared SDK…"
+              />
+            </Field>
+            <Field label="Target group">
+              <input
+                type="text"
+                value={form.target_group}
+                onChange={(e) => update('target_group', e.target.value)}
+                style={inputStyle}
+                placeholder="Who is this for? e.g. city planners, residents"
+              />
+            </Field>
           </Section>
 
           <Section title="Team">
@@ -195,14 +263,13 @@ export function SubmitPage() {
                 style={inputStyle}
               />
             </Field>
-
             <Field label="Team members">
               <input
                 type="text"
                 value={form.members}
                 onChange={(e) => update('members', e.target.value)}
                 style={inputStyle}
-                placeholder="nickname1, nickname2, nickname3"
+                placeholder="Ada Lovelace, Alan Turing, …"
               />
             </Field>
           </Section>
@@ -218,7 +285,6 @@ export function SubmitPage() {
                 placeholder="https://github.com/team/repo"
               />
             </Field>
-
             <Field label="Live demo URL">
               <input
                 type="url"
@@ -228,83 +294,60 @@ export function SubmitPage() {
                 placeholder="https://your-demo.example.com"
               />
             </Field>
-
-            <Field
-              label="Video URL"
-              hint={<span style={{ color: 'var(--text)' }}>YouTube, Loom, etc.</span>}
-            >
-              <input
-                type="url"
-                value={form.video_url}
-                onChange={(e) => update('video_url', e.target.value)}
-                style={inputStyle}
-                placeholder="https://youtu.be/…"
-              />
-            </Field>
           </Section>
 
-          <Section title="APIs Used">
+          <Section title="Demo video">
+            <div style={{ marginBottom: 4, color: 'var(--text)', fontSize: 14 }}>
+              Upload a video (max 500 MB) or paste a YouTube / Loom link. Optional but recommended.
+            </div>
+            <VideoUploader onChange={setVideoUrl} onBusyChange={setVideoBusy} />
+          </Section>
+
+          <Section title="Screenshots">
+            <div style={{ marginBottom: 12, color: 'var(--text)', fontSize: 14 }}>
+              Show your project — up to 5 images.
+            </div>
+            <ImageUploader onChange={setScreenshots} onBusyChange={setImagesBusy} />
+          </Section>
+
+          <Section title="Idea sketches & PDFs">
+            <div style={{ marginBottom: 12, color: 'var(--text)', fontSize: 14 }}>
+              Optional — upload hand-drawn sketches, a concept slide, or a PDF of your idea.
+            </div>
+            <DocumentUploader onChange={setDocuments} onBusyChange={setDocsBusy} />
+          </Section>
+
+          <Section title="APIs used">
             <div style={{ marginBottom: 12, color: 'var(--text)', fontSize: 14 }}>
               Which Infrared SDK analyses did you use?
             </div>
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-                gap: 10,
-              }}
-            >
-              {APIS.map((apiName) => {
-                const checked = form.apis_used.includes(apiName)
-                return (
-                  <label
-                    key={apiName}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 10,
-                      padding: '10px 14px',
-                      background: checked ? 'var(--cyan-dim)' : 'var(--bg-surface)',
-                      border: `1px solid ${checked ? 'var(--cyan-border)' : 'var(--border)'}`,
-                      borderRadius: 8,
-                      cursor: 'pointer',
-                      color: checked ? 'var(--cyan)' : 'var(--text-body)',
-                      fontSize: 14,
-                      transition: 'background 0.15s, border-color 0.15s',
-                      userSelect: 'none',
-                    }}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={checked}
-                      onChange={() => toggleApi(apiName)}
-                      style={{ accentColor: '#23E5E5', cursor: 'pointer' }}
-                    />
-                    {apiName}
-                  </label>
-                )
-              })}
-            </div>
+            <ApiCheckboxGrid selected={form.apis_used} onToggle={toggleApi} />
           </Section>
 
-          <Section title="Screenshots (optional)">
-            <div style={{ marginBottom: 12, color: 'var(--text)', fontSize: 14 }}>
-              Screenshot URLs (optional) — paste up to 3 public image URLs (R2 or any host).
-            </div>
-            {([1, 2, 3] as const).map((n) => {
-              const key = `screenshot_${n}` as 'screenshot_1' | 'screenshot_2' | 'screenshot_3'
-              return (
-                <Field key={n} label={`Screenshot ${n}`}>
-                  <input
-                    type="url"
-                    value={form[key]}
-                    onChange={(e) => update(key, e.target.value)}
-                    style={inputStyle}
-                    placeholder="https://…"
-                  />
-                </Field>
-              )
-            })}
+          <Section title="SDK feedback & prize (optional)">
+            <Field
+              label="How was the Infrared SDK?"
+              hint={<span style={{ color: 'var(--text)' }}>optional</span>}
+            >
+              <textarea
+                value={form.sdk_feedback}
+                onChange={(e) => update('sdk_feedback', e.target.value)}
+                style={textareaStyle}
+                placeholder="What worked, what was confusing, what you wished existed…"
+              />
+            </Field>
+            <Field
+              label="Prize account email"
+              hint={<span style={{ color: 'var(--text)' }}>where winning tokens go</span>}
+            >
+              <input
+                type="email"
+                value={form.prize_email}
+                onChange={(e) => update('prize_email', e.target.value)}
+                style={inputStyle}
+                placeholder="account@yourteam.com"
+              />
+            </Field>
           </Section>
 
           {status === 'error' && (
@@ -323,62 +366,27 @@ export function SubmitPage() {
             </div>
           )}
 
+          {uploadsBusy && (
+            <div style={{ color: 'var(--text)', fontSize: 14, marginBottom: 14, textAlign: 'center' }}>
+              Waiting for uploads to finish…
+            </div>
+          )}
+
           <button
             type="submit"
             className="btn-primary"
-            disabled={submitting}
+            disabled={submitting || uploadsBusy}
             style={{
               width: '100%',
               padding: '16px 28px',
               fontSize: 17,
-              opacity: submitting ? 0.7 : 1,
-              cursor: submitting ? 'wait' : 'pointer',
+              opacity: submitting || uploadsBusy ? 0.7 : 1,
+              cursor: submitting ? 'wait' : uploadsBusy ? 'not-allowed' : 'pointer',
             }}
           >
-            {submitting ? 'Submitting…' : 'Submit Project →'}
+            {submitting ? 'Submitting…' : uploadsBusy ? 'Uploading…' : 'Submit Project →'}
           </button>
         </form>
-      </div>
-    </div>
-  )
-}
-
-function SuccessView({ onAnother }: { onAnother: () => void }) {
-  return (
-    <div style={pageStyle}>
-      <div style={{ ...containerStyle, textAlign: 'center', paddingTop: 64 }}>
-        <div
-          style={{
-            width: 96,
-            height: 96,
-            borderRadius: '50%',
-            background: 'var(--cyan-dim)',
-            border: '1px solid var(--cyan-border)',
-            color: 'var(--cyan)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '0 auto 24px',
-            fontSize: 48,
-            lineHeight: 1,
-          }}
-        >
-          ✓
-        </div>
-        <h1 style={{ fontSize: 40, marginBottom: 12 }} className="text-gradient">
-          Your project is live!
-        </h1>
-        <p style={{ color: 'var(--text)', marginBottom: 32 }}>
-          Submissions are public immediately. Browse the gallery or submit another.
-        </p>
-        <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-          <a href="/projects" className="btn-primary">
-            View all projects →
-          </a>
-          <button type="button" className="btn-outline" onClick={onAnother}>
-            Submit another
-          </button>
-        </div>
       </div>
     </div>
   )

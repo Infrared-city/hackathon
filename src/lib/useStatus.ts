@@ -28,11 +28,22 @@ let cache: CacheEntry | null = null
 const TTL_MS = 60_000
 const FETCH_TIMEOUT_MS = 4_000
 
+// `?preview=1` forces the gate open in the UI for upload testing — but ONLY on
+// *.pages.dev preview deployments, never on the real hackathon.infrared.city
+// domain. The backend gate (submit_project) enforces the real state regardless.
+function previewOverride(): HackathonStatus | null {
+  if (typeof window === 'undefined') return null
+  const onPreviewHost = window.location.hostname.endsWith('.pages.dev')
+  const flagged = new URLSearchParams(window.location.search).get('preview') === '1'
+  return onPreviewHost && flagged ? { registration: 'open', submission: 'open' } : null
+}
+
 export function useStatus(): { status: HackathonStatus; loading: boolean } {
-  const [status, setStatus]   = useState<HackathonStatus>(() => cache?.data ?? clockFallback())
-  const [loading, setLoading] = useState<boolean>(() => !cache || Date.now() - cache.fetched_at > TTL_MS)
+  const [status, setStatus]   = useState<HackathonStatus>(() => previewOverride() ?? cache?.data ?? clockFallback())
+  const [loading, setLoading] = useState<boolean>(() => !previewOverride() && (!cache || Date.now() - cache.fetched_at > TTL_MS))
 
   useEffect(() => {
+    if (previewOverride()) { setLoading(false); return }
     if (cache && Date.now() - cache.fetched_at < TTL_MS) {
       setStatus(cache.data); setLoading(false); return
     }

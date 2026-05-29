@@ -59,8 +59,10 @@ test.describe('Project submission → gallery', () => {
     await page.getByPlaceholder(/project name/i).fill(projectName)
     await page.getByPlaceholder(/one.liner|in one sentence/i).fill('Automated smoke test submission')
     await page.getByRole('combobox').selectOption('Open')
+    await page.getByPlaceholder(/what problem/i).fill('Smoke test problem statement')
+    await page.getByPlaceholder(/how does your project/i).fill('Smoke test solution statement')
     await page.getByPlaceholder(/team name/i).fill(TEST_TEAM)
-    await page.getByPlaceholder(/members|teammates/i).fill(TEST_NICK)
+    await page.getByPlaceholder(/Ada Lovelace|members|teammates/i).fill(TEST_NICK)
     await page.getByPlaceholder(/github/i).fill('https://github.com/Infrared-city/hackathon')
 
     await page.getByRole('button', { name: /submit project/i }).click()
