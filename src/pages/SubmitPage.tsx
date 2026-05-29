@@ -204,8 +204,8 @@ export function SubmitPage() {
               </Field>
             </div>
             <div style={rowGrid}>
-              <Field label="GitHub URL" required>
-                <input type="url" value={form.github_url} onChange={(e) => update('github_url', e.target.value)} required style={inputStyle} placeholder="https://github.com/team/repo" />
+              <Field label="GitHub URL">
+                <input type="url" value={form.github_url} onChange={(e) => update('github_url', e.target.value)} style={inputStyle} placeholder="https://github.com/team/repo" />
               </Field>
               <Field label="Live demo URL">
                 <input type="url" value={form.demo_url} onChange={(e) => update('demo_url', e.target.value)} style={inputStyle} placeholder="https://your-demo.example.com" />
