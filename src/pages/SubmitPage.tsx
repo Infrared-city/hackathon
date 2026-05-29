@@ -95,6 +95,21 @@ export function SubmitPage() {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
     if (uploadsBusy) return
+
+    const missing: string[] = []
+    if (!form.project_name.trim()) missing.push('project name')
+    if (!form.one_liner.trim()) missing.push('one-liner')
+    if (!form.challenge_track) missing.push('challenge track')
+    if (!form.team_name.trim()) missing.push('team name')
+    if (!form.problem.trim()) missing.push('the problem')
+    if (!form.solution.trim()) missing.push('the solution')
+    if (screenshots.length === 0 && !videoUrl.trim()) missing.push('at least one image or a video')
+    if (missing.length) {
+      setStatus('error')
+      setErrorMsg('Please add: ' + missing.join(', ') + '.')
+      return
+    }
+
     setStatus('submitting')
     setErrorMsg('')
 
