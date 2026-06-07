@@ -52,7 +52,7 @@ export function SubmitPage() {
     return <GateNotice title="Submissions not open yet" body="The Day 3 submission window opens once your instructor turns it on. Until then, keep building." ctaHref="/" ctaLabel="Back to home" />
   }
   if (submission === 'closed') {
-    return <GateNotice title="Submissions closed" body="The Day 3 deadline (Sunday, June 14) has passed. Browse what everyone shipped." ctaHref="/projects" ctaLabel="View projects" />
+    return <GateNotice title="Submissions closed" body="The Day 3 deadline (Sunday, June 7) has passed. Browse what everyone shipped." ctaHref="/projects" ctaLabel="View projects" />
   }
 
   const update = <K extends keyof FormState>(key: K, value: FormState[K]) =>
@@ -125,7 +125,7 @@ export function SubmitPage() {
           <h1 style={{ fontSize: 44, marginBottom: 12 }}>Submit your app</h1>
           <p style={{ color: 'var(--text)', fontSize: 17, lineHeight: 1.6 }}>
             Your final deployment. Public immediately — you can resubmit any time.{' '}
-            <b style={{ color: 'var(--text-h)' }}>Due Sunday, June 14.</b>
+            <b style={{ color: 'var(--text-h)' }}>Due Sunday, June 7.</b>
           </p>
         </header>
 
